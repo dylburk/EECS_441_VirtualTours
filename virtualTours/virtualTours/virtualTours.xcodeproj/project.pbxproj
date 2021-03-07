@@ -13,6 +13,8 @@
 		3CB00B4925F2B51C002BB2A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4725F2B51C002BB2A1 /* Main.storyboard */; };
 		3CB00B4B25F2B51D002BB2A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */; };
 		3CB00B4E25F2B51D002BB2A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4C25F2B51D002BB2A1 /* LaunchScreen.storyboard */; };
+		86F29870D7C221A97BE9EE12 /* Pods_virtualTours.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933661FE36BA7AE6C1EC37E3 /* Pods_virtualTours.framework */; };
+		A0B197B325F51EF7002F112B /* DeviceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B197B225F51EF7002F112B /* DeviceLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,10 @@
 		3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3CB00B4D25F2B51D002BB2A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3CB00B4F25F2B51D002BB2A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		933661FE36BA7AE6C1EC37E3 /* Pods_virtualTours.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_virtualTours.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0B197B225F51EF7002F112B /* DeviceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLocation.swift; sourceTree = "<group>"; };
+		A97762A3BEB061D3427FAB8D /* Pods-virtualTours.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.release.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.release.xcconfig"; sourceTree = "<group>"; };
+		DB93A2A6BDD3E1FDA21EF5B7 /* Pods-virtualTours.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.debug.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F29870D7C221A97BE9EE12 /* Pods_virtualTours.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2AFDA70B35EB0FFB06CA744A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DB93A2A6BDD3E1FDA21EF5B7 /* Pods-virtualTours.debug.xcconfig */,
+				A97762A3BEB061D3427FAB8D /* Pods-virtualTours.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		3CB00B3525F2B51C002BB2A1 = {
 			isa = PBXGroup;
 			children = (
 				3CB00B4025F2B51C002BB2A1 /* virtualTours */,
 				3CB00B3F25F2B51C002BB2A1 /* Products */,
+				2AFDA70B35EB0FFB06CA744A /* Pods */,
+				A681AB0DF7E4C4A7C428DC85 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +77,7 @@
 			children = (
 				3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */,
 				3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */,
+				A0B197B225F51EF7002F112B /* DeviceLocation.swift */,
 				3CB00B4525F2B51C002BB2A1 /* ViewController.swift */,
 				3CB00B4725F2B51C002BB2A1 /* Main.storyboard */,
 				3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */,
@@ -67,6 +87,14 @@
 			path = virtualTours;
 			sourceTree = "<group>";
 		};
+		A681AB0DF7E4C4A7C428DC85 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				933661FE36BA7AE6C1EC37E3 /* Pods_virtualTours.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3CB00B5225F2B51D002BB2A1 /* Build configuration list for PBXNativeTarget "virtualTours" */;
 			buildPhases = (
+				A122F3E5AB3B7C0DCF9A7589 /* [CP] Check Pods Manifest.lock */,
 				3CB00B3A25F2B51C002BB2A1 /* Sources */,
 				3CB00B3B25F2B51C002BB2A1 /* Frameworks */,
 				3CB00B3C25F2B51C002BB2A1 /* Resources */,
+				6DC42F42BE34ED5E751822D5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -132,11 +162,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6DC42F42BE34ED5E751822D5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-virtualTours/Pods-virtualTours-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-virtualTours/Pods-virtualTours-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-virtualTours/Pods-virtualTours-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A122F3E5AB3B7C0DCF9A7589 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-virtualTours-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3CB00B3A25F2B51C002BB2A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0B197B325F51EF7002F112B /* DeviceLocation.swift in Sources */,
 				3CB00B4625F2B51C002BB2A1 /* ViewController.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,
 				3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */,
@@ -283,6 +356,7 @@
 		};
 		3CB00B5325F2B51D002BB2A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB93A2A6BDD3E1FDA21EF5B7 /* Pods-virtualTours.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -302,6 +376,7 @@
 		};
 		3CB00B5425F2B51D002BB2A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A97762A3BEB061D3427FAB8D /* Pods-virtualTours.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
