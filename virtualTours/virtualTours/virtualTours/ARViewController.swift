@@ -22,9 +22,22 @@ class ARViewController: UIViewController {
         let configuration = ARWorldTrackingConfiguration()
         
         arView.session.run(configuration)
+
+        /* Attempt to use customer anchor but can use plane detection at another time
+        var translation = matrix_identity_float4x4
+        translation.columns.3.z = -0.3
+        let transform = arView.session.currentFrame?.camera.transform ?? translation * translation
         
-        let cubeNode = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
-        cubeNode.position = SCNVector3(0, 0, -0.2) // SceneKit/AR coordinates are in meters
-        arView.scene.rootNode.addChildNode(cubeNode)
+        let anchor = ARAnchor(transform: transform)
+        arView.session.add(anchor: anchor)*/
+        
+        
+        let plane = SCNNode(geometry: SCNPlane(width: 0.5, height: 0.5))
+        plane.position = SCNVector3(0, 0, -2)
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.red
+        plane.geometry?.firstMaterial = material
+        //SCNPlanes are rendered vertically by default
+        arView.scene.rootNode.addChildNode(plane)
     }
 }
