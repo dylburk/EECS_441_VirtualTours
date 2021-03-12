@@ -5,6 +5,7 @@ target 'virtualTours' do
   use_frameworks!
 
   # Pods for VirtualTours
-  pod 'GoogleMaps'
+  pod 'GoogleMaps', '4.2.0'
+  pod 'GooglePlaces', '4.2.0'
 
 end

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qK5-0x-3Dh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qK5-0x-3Dh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -57,23 +57,58 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MY2-V8-4Kr">
+                                <rect key="frame" x="119" y="312" width="176" height="21"/>
+                                <accessibility key="accessibilityConfiguration" identifier="nameLabel"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Wc-uA-NqK">
+                                <rect key="frame" x="119" y="381" width="176" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" identifier="addressLabel"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2uE-wz-fZt">
+                                <rect key="frame" x="156" y="466" width="102" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Get Place"/>
+                                <connections>
+                                    <action selector="getCurrentPlace:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tOW-ju-oOh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2uE-wz-fZt" secondAttribute="trailing" constant="156" id="2BL-sp-QQD"/>
                             <constraint firstItem="41f-By-QTe" firstAttribute="centerX" secondItem="WYq-e3-eoh" secondAttribute="centerX" id="3pg-3o-5rE"/>
                             <constraint firstItem="KWV-9o-fEq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="170" id="4PP-Q8-Vzs"/>
+                            <constraint firstItem="7Wc-uA-NqK" firstAttribute="top" secondItem="MY2-V8-4Kr" secondAttribute="bottom" constant="48" id="ENG-Dc-2tx"/>
+                            <constraint firstItem="2uE-wz-fZt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="156" id="PAE-dg-Oim"/>
                             <constraint firstItem="KWV-9o-fEq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Sef-LM-LaB"/>
+                            <constraint firstItem="MY2-V8-4Kr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="119" id="dFx-KT-jv0"/>
+                            <constraint firstItem="MY2-V8-4Kr" firstAttribute="top" secondItem="KWV-9o-fEq" secondAttribute="bottom" constant="24" id="dq3-Gs-uTt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WYq-e3-eoh" secondAttribute="bottom" constant="36" id="ljM-ep-Mbm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7Wc-uA-NqK" secondAttribute="trailing" constant="119" id="qU3-HS-JJ5"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MY2-V8-4Kr" secondAttribute="trailing" constant="119" id="rIl-OD-xV4"/>
                             <constraint firstItem="KWV-9o-fEq" firstAttribute="centerX" secondItem="41f-By-QTe" secondAttribute="centerX" id="tdU-Sx-362"/>
+                            <constraint firstItem="7Wc-uA-NqK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="119" id="vcx-8F-kGX"/>
+                            <constraint firstItem="2uE-wz-fZt" firstAttribute="top" secondItem="7Wc-uA-NqK" secondAttribute="bottom" constant="64.5" id="x3r-Pz-ktP"/>
                             <constraint firstItem="WYq-e3-eoh" firstAttribute="top" secondItem="41f-By-QTe" secondAttribute="bottom" constant="8" id="zZb-n0-9hg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="VirtualTours" id="Blc-0i-U21"/>
+                    <connections>
+                        <outlet property="addressLabel" destination="7Wc-uA-NqK" id="cB5-Dr-s3w"/>
+                        <outlet property="namesLabel" destination="MY2-V8-4Kr" id="y46-6v-UlV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-686" y="133"/>
+            <point key="canvasLocation" x="-686.95652173913049" y="132.58928571428572"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="kYn-aU-ZKF">
