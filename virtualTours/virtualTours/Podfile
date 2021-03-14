@@ -1,10 +1,10 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '14.3'
+platform :ios, '14.3'
 
 target 'virtualTours' do
   use_frameworks!
 
   # Pods for VirtualTours
   pod 'GoogleMaps'
-
+  pod 'GooglePlaces'
 end
