@@ -39,11 +39,6 @@ class ARViewController: UIViewController, CLLocationManagerDelegate{
         view.addSubview(arView)
         
         
-        let width = self.view.frame.width
-        let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: width, height: 44))
-        self.view.addSubview(navigationBar);
-        let navigationItem = UINavigationItem(title: "VT")
-        navigationBar.setItems([navigationItem], animated: false)
 
         
         
@@ -54,6 +49,12 @@ class ARViewController: UIViewController, CLLocationManagerDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200.0))
+        navigationBar.barTintColor = UIColor.systemBackground
+        self.view.addSubview(navigationBar);
+        let navigationItem = UINavigationItem(title: "VT")
+        navigationBar.setItems([navigationItem], animated: false)
         
         // Run the view's AR session
         print("running view")

@@ -16,23 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="48Q-MM-W6v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zZ-cI-8dQ">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <navigationItem title="VT" id="ysg-Gz-Sip" userLabel="Virtual Tours"/>
-                                </items>
-                            </navigationBar>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="5cw-zN-4Y0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="9zZ-cI-8dQ" firstAttribute="leading" secondItem="5cw-zN-4Y0" secondAttribute="leading" id="Ez7-dh-Ydw"/>
-                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="top" secondItem="9zZ-cI-8dQ" secondAttribute="top" id="M79-mU-hnW"/>
-                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="trailing" secondItem="9zZ-cI-8dQ" secondAttribute="trailing" id="nRM-qd-z9V"/>
-                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="bottom" secondItem="9zZ-cI-8dQ" secondAttribute="bottom" constant="774" id="zU0-h0-Rt3"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5Bc-kx-qav"/>
                 </viewController>
