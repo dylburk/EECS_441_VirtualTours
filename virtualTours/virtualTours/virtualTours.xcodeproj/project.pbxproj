@@ -14,8 +14,8 @@
 		3CB00B4B25F2B51D002BB2A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */; };
 		3CB00B4E25F2B51D002BB2A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4C25F2B51D002BB2A1 /* LaunchScreen.storyboard */; };
 		787969D825F58C7900BDEFFD /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787969D725F58C7900BDEFFD /* ARViewController.swift */; };
+		78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF5F4625FF00E9000DD024 /* NearbyStore.swift */; };
 		86F29870D7C221A97BE9EE12 /* Pods_virtualTours.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933661FE36BA7AE6C1EC37E3 /* Pods_virtualTours.framework */; };
-		A0021C6D25FEF53B00DAC73E /* NearbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0021C6C25FEF53B00DAC73E /* NearbyStore.swift */; };
 		A0BE8DC225F5605A00F7A9F3 /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */; };
 		C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745381C25FBDA5500D8399A /* LandmarkLoader.swift */; };
 		C745383525FBF5D900D8399A /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745383425FBF5D900D8399A /* Landmark.swift */; };
@@ -31,8 +31,8 @@
 		3CB00B4D25F2B51D002BB2A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3CB00B4F25F2B51D002BB2A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		787969D725F58C7900BDEFFD /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		78FF5F4625FF00E9000DD024 /* NearbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyStore.swift; sourceTree = "<group>"; };
 		933661FE36BA7AE6C1EC37E3 /* Pods_virtualTours.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_virtualTours.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0021C6C25FEF53B00DAC73E /* NearbyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NearbyStore.swift; path = "../../../../EECS_441_VirtualTours-master/virtualTours/virtualTours/virtualTours/NearbyStore.swift"; sourceTree = "<group>"; };
 		A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
 		A97762A3BEB061D3427FAB8D /* Pods-virtualTours.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.release.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.release.xcconfig"; sourceTree = "<group>"; };
 		C745381C25FBDA5500D8399A /* LandmarkLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkLoader.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 				3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */,
 				A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */,
 				3CB00B4525F2B51C002BB2A1 /* ViewController.swift */,
-				A0021C6C25FEF53B00DAC73E /* NearbyStore.swift */,
+				78FF5F4625FF00E9000DD024 /* NearbyStore.swift */,
 				3CB00B4725F2B51C002BB2A1 /* Main.storyboard */,
 				3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */,
 				3CB00B4C25F2B51D002BB2A1 /* LaunchScreen.storyboard */,
@@ -239,8 +239,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C745383525FBF5D900D8399A /* Landmark.swift in Sources */,
-				A0021C6D25FEF53B00DAC73E /* NearbyStore.swift in Sources */,
 				3CB00B4625F2B51C002BB2A1 /* ViewController.swift in Sources */,
+				78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */,
 				C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,
 				A0BE8DC225F5605A00F7A9F3 /* CurrentLocation.swift in Sources */,
@@ -394,7 +394,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4D3WF8667Z;
+				DEVELOPMENT_TEAM = G9YM3FZSY3;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -414,7 +414,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4D3WF8667Z;
+				DEVELOPMENT_TEAM = G9YM3FZSY3;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
