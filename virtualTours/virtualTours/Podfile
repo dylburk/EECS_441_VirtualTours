@@ -6,5 +6,6 @@ target 'virtualTours' do
 
   # Pods for VirtualTours
   pod 'GoogleMaps'
+  pod 'ARCL'
   pod 'GooglePlaces'
 end
