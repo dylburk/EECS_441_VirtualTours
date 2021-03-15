@@ -25,26 +25,17 @@ class ARViewController: UIViewController, CLLocationManagerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // SMS notification
+        let store = NearbyStore()
+        store.getNearby(refresh: {}, completion: {})
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
-        
         landmarks = []
-        
-        
         
         arView = SceneLocationView()
         view.addSubview(arView)
-        
-        
-
-        
-        
-        
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
