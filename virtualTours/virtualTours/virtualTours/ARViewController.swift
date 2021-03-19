@@ -39,8 +39,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let colors = [UIColor.systemGreen, UIColor.systemBlue, UIColor.systemOrange, UIColor.systemPurple, UIColor.systemYellow,
                   UIColor.systemRed]
     
-    let northingIncrementMeters = 100.0
-    let eastingIncrementMeters = 75.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,7 +198,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         
         DispatchQueue.main.async {
-            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: UIColor.black.withAlphaComponent(0.75))
+            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
 
             let annotationNode = LocationAnnotationNode(location: location, view: labeledView)
             annotationNode.annotationHeightAdjustmentFactor = 7.0
