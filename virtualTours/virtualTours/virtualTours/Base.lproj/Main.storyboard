@@ -11,21 +11,60 @@
         <!--View Controller-->
         <scene sceneID="JNv-4f-Gpf">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dCo-IP-WUS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="eOR-xL-kn7" customClass="ARViewController" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="48Q-MM-W6v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zoF-Mv-ldl">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="414" id="EFD-BK-w40"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAS-D9-69C">
+                                <rect key="frame" x="20" y="44" width="46" height="25"/>
+                                <state key="normal" image="line.horizontal.3" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywo-gu-Jni">
+                                <rect key="frame" x="359" y="39.5" width="35" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="gWQ-ej-xBx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="5cw-zN-4Y0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="bottom" secondItem="zoF-Mv-ldl" secondAttribute="bottom" id="84O-WE-pEM"/>
+                            <constraint firstItem="zoF-Mv-ldl" firstAttribute="centerX" secondItem="5cw-zN-4Y0" secondAttribute="centerX" id="8TZ-L9-IQp"/>
+                            <constraint firstItem="zoF-Mv-ldl" firstAttribute="top" secondItem="5cw-zN-4Y0" secondAttribute="top" id="Ehm-cp-XoT"/>
+                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="trailing" secondItem="SAS-D9-69C" secondAttribute="trailing" constant="348" id="Fvu-YG-uOZ"/>
+                            <constraint firstItem="ywo-gu-Jni" firstAttribute="leading" secondItem="SAS-D9-69C" secondAttribute="trailing" constant="293" id="Xgp-kU-NIi"/>
+                            <constraint firstItem="SAS-D9-69C" firstAttribute="leading" secondItem="5cw-zN-4Y0" secondAttribute="leading" constant="20" id="grQ-hj-n6o"/>
+                            <constraint firstItem="ywo-gu-Jni" firstAttribute="centerY" secondItem="SAS-D9-69C" secondAttribute="centerY" id="hCb-Ix-SgM"/>
+                            <constraint firstItem="5cw-zN-4Y0" firstAttribute="trailing" secondItem="ywo-gu-Jni" secondAttribute="trailing" constant="20" id="lcz-66-yj0"/>
+                            <constraint firstItem="SAS-D9-69C" firstAttribute="top" secondItem="5cw-zN-4Y0" secondAttribute="top" id="rAl-Hw-8XP"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5Bc-kx-qav"/>
+                    <connections>
+                        <outlet property="contentView" destination="zoF-Mv-ldl" id="Jwz-gq-8rL"/>
+                    </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dCo-IP-WUS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="133"/>
+            <point key="canvasLocation" x="131.8840579710145" y="132.58928571428572"/>
         </scene>
     </scenes>
     <resources>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
