@@ -14,23 +14,45 @@ import ARCL
 import CoreLocation
 
 
-class ARViewController: UIViewController, CLLocationManagerDelegate{
+class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDelegate{
 
-    var arView: SceneLocationView!
     
+    @IBOutlet weak var contentView: UIView!
+    
+    var arView: SceneLocationView!
     let locationManager = CLLocationManager()
-    var landmarks: [Landmark]!
-    var selectedLandmark: Landmark?
+    var lastLocation = CLLocation()
+    
+    let updateDeltaMeters = 10.0
+    
+    public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
+    public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
+    public var scalingScheme = ScalingScheme.normal
+    public var continuallyAdjustNodePositionWhenWithinRange = true
+    public var continuallyUpdatePositionAndScale = true
+    public var annotationHeightAdjustmentFactor = 1.0
+    public var colorIndex = 0
+    
+    var landmarks : [Landmark]! = []
+    
+    
+    let colors = [UIColor.systemGreen, UIColor.systemBlue, UIColor.systemOrange, UIColor.systemPurple, UIColor.systemYellow,
+                  UIColor.systemRed]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         // SMS notification
         let store = NearbyStore()
-        store.getNearby(refresh: {}, completion: {})
+        store.getNearby(refresh: {}, completion: {})*/
         
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
+        locationManager.startUpdatingLocation()
+        locationManager.requestWhenInUseAuthorization()
         
         landmarks = []
         
@@ -40,86 +62,157 @@ class ARViewController: UIViewController, CLLocationManagerDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let navigationBar: UINavigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200.0))
-        navigationBar.barTintColor = UIColor.systemBackground
-        self.view.addSubview(navigationBar);
-        let navigationItem = UINavigationItem(title: "VT")
-        navigationBar.setItems([navigationItem], animated: false)
-        
-        // Run the view's AR session
-        print("running view")
-        arView.run()
+
     }
+    
+    func refactorScene(){
+        arView?.removeFromSuperview()
+        let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
+        newARView.translatesAutoresizingMaskIntoConstraints = false
+        newARView.arViewDelegate = self
+        newARView.locationEstimateMethod = locationEstimateMethod
+
+        newARView.debugOptions = [.showWorldOrigin]
+        newARView.showAxesNode = false
+        newARView.autoenablesDefaultLighting = true
+        contentView.addSubview(newARView)
+        arView = newARView
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationManager.startUpdatingLocation()
-        locationManager.requestWhenInUseAuthorization()
+        refactorScene()
+        arView?.run()
         // draw the AR scene
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        arView?.removeAllNodes()
+        arView?.pause()
         super.viewWillDisappear(animated)
         
         // Pause the view's session
-        arView.pause()
     }
     override func viewDidLayoutSubviews() {
       super.viewDidLayoutSubviews()
-
-      arView.frame = view.bounds
+      arView?.frame = view.bounds
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
-            let location = locations.last!
-            print("My Location: ", location.coordinate.latitude, location.coordinate.longitude)
-            getLandmarks(location:location)
-                
+            if (lastLocation.distance(from: locations.last!) < updateDeltaMeters) { return }
+            lastLocation = locations.last!
+            print("My Location: ", lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
+            landmarks = []
+            arView?.removeAllNodes()
+            self.updateLandmarks()
+            print(lastLocation.distance(from: locations.last!))
 
-            if location.horizontalAccuracy < 100 {
-              manager.stopUpdatingLocation()
-            }
         }
     }
     
-    func getLandmarks(location: CLLocation){
-        print("Finding landmarks")
+    func setNode(_ node: LocationNode) {
+        if let annoNode = node as? LocationAnnotationNode {
+            print("refactoring height")
+            annoNode.annotationHeightAdjustmentFactor = annotationHeightAdjustmentFactor
+        }
+        node.scalingScheme = scalingScheme
+        node.continuallyAdjustNodePositionWhenWithinRange = continuallyAdjustNodePositionWhenWithinRange
+        node.continuallyUpdatePositionAndScale = continuallyUpdatePositionAndScale
+    }
+    
+    func updateLandmarks() {
+        guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.updateLandmarks()
+                print("getting landmarks")
+            }
+            return
+        }
         
+        
+        self.getLandmarks(currentLocation: currentLocation) { error in
+            if (error != nil) {
+                print(error!)
+                return
+            }
+            self.colorIndex += 1
+            self.addLandmarks(currentLocation)
+            //self.addDynamicNodes(currentLocation)
+        }
+    }
+    
+    
+    func addLandmarks(_ currentLocation: CLLocation){
+        print("Adding landmarks")
+        if landmarks.isEmpty {
+            return
+        }
+        
+        print("landmarks: ", landmarks.count)
+        
+        for landmark in landmarks {
+            print(landmark.title)
+            addLandmarkToARScene(currentLocation: currentLocation, landmark: landmark)
+        }
+
+    }
+    
+    func getLandmarks(currentLocation: CLLocation, handler: @escaping (NSError?) -> Void) {
         let loader = LandmarkLoader()
-        loader.loadLandmarks(location: location){ landmarkDict, error in
         
-            
+        loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
+                self.landmarks = []
                 for item in result {
-                    
+
                     let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
-                    print(title)
-                    
+                    //let latitude = 42.195942
+                    //let longitude = -85.713417
+                    //let title = "Gamer Zone"
+
                     let landmark = Landmark(latitude: latitude,
                                        longitude: longitude,
                                        title: title)
                     self.landmarks.append(landmark)
-                    self.addLandmarkToARScene(landmark)
+                    //break
                 }
+                print("LANDMARKS:")
+                print(self.landmarks!)
+                handler(nil)
             }
         }
     }
     
-    func addLandmarkToARScene(_ landmark: Landmark){
-        let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
+
+    
+    
+    func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
+        
+        print("Adding landmark")
+        
+        //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
+        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) *  95000
+        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * 75000
+        
+        
+        
+        let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
+        let color = colors[colorIndex % colors.count]
+        
+        
+        print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
+        
         DispatchQueue.main.async {
-            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: UIColor.black.withAlphaComponent(0.75))
+            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
 
             let annotationNode = LocationAnnotationNode(location: location, view: labeledView)
-            annotationNode.annotationHeightAdjustmentFactor = 7.0
-            annotationNode.continuallyUpdatePositionAndScale = true
-            annotationNode.continuallyAdjustNodePositionWhenWithinRange = true
+            self.setNode(annotationNode)
             let billboardConstraint = SCNBillboardConstraint()
             billboardConstraint.freeAxes = SCNBillboardAxis.Y
             annotationNode.constraints = [billboardConstraint]
@@ -129,6 +222,77 @@ class ARViewController: UIViewController, CLLocationManagerDelegate{
         }
     }
     
+    
+
+    
+    //tutorial
+    
+    func addDynamicNodes(_ currentLocation: CLLocation) {
+
+        print("adding Dynamic Nodes")
+
+        // Copy the current location because it's a reference type. Necessary?
+        let referenceLocation = CLLocation(coordinate: currentLocation.coordinate, altitude: currentLocation.altitude)
+        
+        
+        for angle in stride(from: 0, to: 360, by: 10){
+            let color = colors[colorIndex % colors.count]
+            colorIndex += 1
+            let northOffset = __cospi(Double(angle) * Double.pi / 180) * 10
+            let eastOffset = __sinpi(Double(angle) * Double.pi / 180) * 10
+            print("angle: \(angle): (\(northOffset),\(eastOffset))")
+            DispatchQueue.main.async {
+                let labeledView = UIView.prettyLabeledView(text: "test", backgroundColor: color.withAlphaComponent(0.75))
+                let tenMetersLocation = referenceLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0.0))
+                let tenMetersLabelNode = LocationAnnotationNode(location: tenMetersLocation, view: labeledView)
+                self.setNode(tenMetersLabelNode)
+                self.arView.addLocationNodeWithConfirmedLocation(locationNode: tenMetersLabelNode)
+            }
+            
+        }
+        
+
+        
+//        DispatchQueue.main.async {
+//            let labeledSouthView = UIView.prettyLabeledView(text: "South", backgroundColor: color.withAlphaComponent(0.75))
+//            let south10MetersLocation = referenceLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: -10.0,longitudeTranslation: 0.0, altitudeTranslation: 0.0))
+//            let south10MetersLabelNode = LocationAnnotationNode(location: south10MetersLocation, view: labeledSouthView)
+//            south10MetersLabelNode.tag = "S"
+//            self.setNode(south10MetersLabelNode)
+//            self.arView.addLocationNodeWithConfirmedLocation(locationNode: south10MetersLabelNode)
+//        }
+//        DispatchQueue.main.async {
+//            let labeledWestView = UIView.prettyLabeledView(text: "West", backgroundColor: color.withAlphaComponent(0.75))
+//            let west10MetersLocation = referenceLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: 0.0,longitudeTranslation: -10.0, altitudeTranslation: 0.0))
+//            let west10MetersLabelNode = LocationAnnotationNode(location: west10MetersLocation, view: labeledWestView)
+//            west10MetersLabelNode.tag = "W"
+//            self.setNode(west10MetersLabelNode)
+//            self.arView.addLocationNodeWithConfirmedLocation(locationNode: west10MetersLabelNode)
+//        }
+//
+//        DispatchQueue.main.async {
+//            let labeledEastView = UIView.prettyLabeledView(text: "East", backgroundColor: color.withAlphaComponent(0.75))
+//            let east10MetersLocation = referenceLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: 0.0,longitudeTranslation: 10.0, altitudeTranslation: 0.0))
+//            let east10MetersLabelNode = LocationAnnotationNode(location: east10MetersLocation, view: labeledEastView)
+//            east10MetersLabelNode.tag = "E"
+//            self.setNode(east10MetersLabelNode)
+//            self.arView.addLocationNodeWithConfirmedLocation(locationNode: east10MetersLabelNode)
+//        }
+    }
+
+    
+//    public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+//        if let nodes = arView?.locationNodes {
+//            for node in nodes {
+//                if let annoNode = node as? LocationAnnotationNode,
+//                    let textLayer = annoNode.annotationNode.layer as? CATextLayer,
+//                    let distance = arView?.sceneLocationManager.currentLocation?.distance(from: node.location) {
+//                    let distanceString = String(format: "%@ %3.0f", node.tag ?? "", distance)
+//                    textLayer.string = distanceString
+//                }
+//            }
+//        }
+//    }
 
 }
 
@@ -140,6 +304,10 @@ extension UIView {
         let font = UIFont.preferredFont(forTextStyle: .title2)
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (text as NSString).size(withAttributes: fontAttributes)
+        
+//        print("SIZES:")
+//        print(size.width, size.height)
+
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 

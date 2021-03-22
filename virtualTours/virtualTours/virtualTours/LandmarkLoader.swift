@@ -16,8 +16,13 @@ struct LandmarkLoader {
         
         print("loading landmarks")
         
+
+        
         let lat = location.coordinate.latitude
         let long = location.coordinate.longitude
+        
+//        let lat = 42.279343
+//        let long = -83.740889
         
         let uri = apiURL + "longitude=\(long)&latitude=\(lat)"
         
@@ -29,13 +34,15 @@ struct LandmarkLoader {
             } else if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
                     print(data!)
-
                     do {
                         let responseObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
                         guard let responseDict = responseObject as? NSDictionary else {
                             return
                         }
-
+                        
+                        //print("RESPONSE:")
+                        //print(responseDict)
+                    
                         handler(responseDict, nil)
 
                     } catch let error as NSError {
