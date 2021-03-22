@@ -23,14 +23,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let locationManager = CLLocationManager()
     var lastLocation = CLLocation()
     
-    let updateDeltaMeters = 100.0
+    let updateDeltaMeters = 10.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
     public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
     public var scalingScheme = ScalingScheme.normal
     public var continuallyAdjustNodePositionWhenWithinRange = true
     public var continuallyUpdatePositionAndScale = true
-    public var annotationHeightAdjustmentFactor = 1.1
+    public var annotationHeightAdjustmentFactor = 1.0
     public var colorIndex = 0
     
     var landmarks : [Landmark]! = []
@@ -50,7 +50,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        //locationManager.distanceFilter = updateDeltaMeters
+        locationManager.distanceFilter = updateDeltaMeters
         locationManager.startUpdatingLocation()
         locationManager.requestWhenInUseAuthorization()
         
@@ -114,6 +114,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
+            print("refactoring height")
             annoNode.annotationHeightAdjustmentFactor = annotationHeightAdjustmentFactor
         }
         node.scalingScheme = scalingScheme
@@ -136,6 +137,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 print(error!)
                 return
             }
+            self.colorIndex += 1
             self.addLandmarks(currentLocation)
             //self.addDynamicNodes(currentLocation)
         }
@@ -194,22 +196,23 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         print("Adding landmark")
         
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
-        let northOffset = landmark.latitude - currentLocation.coordinate.latitude
-        let eastOffset = landmark.longitude - currentLocation.coordinate.longitude
+        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) *  95000
+        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * 75000
         
-        let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0.0))
+        
+        
+        let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
-        colorIndex += 1
         
+        
+        print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
         
         DispatchQueue.main.async {
             let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
 
             let annotationNode = LocationAnnotationNode(location: location, view: labeledView)
-            annotationNode.annotationHeightAdjustmentFactor = 7
-            annotationNode.continuallyUpdatePositionAndScale = true
-            annotationNode.continuallyAdjustNodePositionWhenWithinRange = true
+            self.setNode(annotationNode)
             let billboardConstraint = SCNBillboardConstraint()
             billboardConstraint.freeAxes = SCNBillboardAxis.Y
             annotationNode.constraints = [billboardConstraint]
@@ -302,9 +305,9 @@ extension UIView {
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (text as NSString).size(withAttributes: fontAttributes)
         
-        print("SIZES:")
-        print(size.width, size.height)
-//
+//        print("SIZES:")
+//        print(size.width, size.height)
+
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
