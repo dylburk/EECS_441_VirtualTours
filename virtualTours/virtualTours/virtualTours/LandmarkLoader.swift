@@ -16,13 +16,11 @@ struct LandmarkLoader {
         
         print("loading landmarks")
         
-
-        
         let lat = location.coordinate.latitude
         let long = location.coordinate.longitude
         
-//        let lat = 42.279343
-//        let long = -83.740889
+        /*let lat = 42.279343
+        let long = -83.740889*/
         
         let uri = apiURL + "longitude=\(long)&latitude=\(lat)"
         

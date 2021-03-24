@@ -9,8 +9,9 @@ import Foundation
 import CoreLocation
 import ARCL
 
-struct Landmark{
+struct Landmark {
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
     let title: String
+    let id: String
 }
