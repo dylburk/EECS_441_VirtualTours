@@ -13,8 +13,7 @@ import MapKit
 import ARCL
 import CoreLocation
 
-
-class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDelegate{
+class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, CLLocationManagerDelegate{
 
     
     @IBOutlet weak var contentView: UIView!
@@ -22,6 +21,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var arView: SceneLocationView!
     let locationManager = CLLocationManager()
     var lastLocation = CLLocation()
+    
     
     let updateDeltaMeters = 10.0
     
@@ -34,8 +34,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     public var colorIndex = 0
     
     var landmarks : [Landmark]! = []
-    
-    
+        
     let colors = [UIColor.systemGreen, UIColor.systemBlue, UIColor.systemOrange, UIColor.systemPurple, UIColor.systemYellow,
                   UIColor.systemRed]
     
@@ -48,6 +47,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let store = NearbyStore()
         store.getNearby(refresh: {}, completion: {})*/
         
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
@@ -57,7 +57,23 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         landmarks = []
         
         arView = SceneLocationView()
+
+        
+        
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal, .vertical]
+        print("nikhil is awesome13")
+        arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,ARSCNDebugOptions.showWorldOrigin]
+        arView.session.run(configuration)
+        
+        
         view.addSubview(arView)
+    }
+    func createSphereNode(with radius: CGFloat, color: UIColor) -> SCNNode {
+            let geometry = SCNSphere(radius: radius)
+            geometry.firstMaterial?.diffuse.contents = color
+            let sphereNode = SCNNode(geometry: geometry)
+            return sphereNode
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,14 +91,30 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.debugOptions = [.showWorldOrigin]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
+        //
+        //
+        
         contentView.addSubview(newARView)
         arView = newARView
-    }
+    }/*
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        
+        
+        // Add the visualization to the ARKit-managed node so that it tracks
+        // changes in the plane anchor as plane estimation continues.
+        print("Hello")
+    }*/
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refactorScene()
+        //
+        let circleNode = createSphereNode(with: 0.2, color: .red)
+        circleNode.position = SCNVector3(0, 0, 2) // 1 meter in front of camera
+        arView.scene.rootNode.addChildNode(circleNode)
+        print("Whats goood")
+        //
         arView?.run()
         // draw the AR scene
     }
@@ -220,6 +252,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             // add node to AR scene
             self.arView.addLocationNodeWithConfirmedLocation(locationNode: annotationNode)
         }
+        
     }
     
     
