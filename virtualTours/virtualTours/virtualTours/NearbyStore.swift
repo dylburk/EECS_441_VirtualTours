@@ -2,10 +2,19 @@ import Foundation
 
 struct NearbyStore {
     private let serverUrl = "https://xy62cwh158.execute-api.us-east-2.amazonaws.com/nearbySMS"
-
+    let phoneNumberKey = "phoneNumber"
     func getNearby(refresh: @escaping () -> (),
                    completion: @escaping () -> ()) {
-        guard let apiUrl = URL(string: serverUrl) else {
+        var modifiedUrl = serverUrl
+        let defaults = UserDefaults.standard
+        if let phoneNumberValue = defaults.string(forKey: phoneNumberKey) {
+                    modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
+                    print(modifiedUrl)
+        } else {
+            return
+        }
+        
+        guard let apiUrl = URL(string: modifiedUrl) else {
             print("getChatts: Bad URL")
             return
         }
