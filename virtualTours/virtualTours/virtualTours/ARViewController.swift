@@ -58,14 +58,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
         
         arView = SceneLocationView()
 
-        
-        
+        /*
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
-        print("nikhil is awesome13")
         arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,ARSCNDebugOptions.showWorldOrigin]
         arView.session.run(configuration)
-        
+        print(arView.session.configuration)*/
         
         view.addSubview(arView)
     }
@@ -83,39 +81,52 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
     
     func refactorScene(){
         arView?.removeFromSuperview()
-        let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
+        let newARView = SceneLocationView.init(frame: contentView.frame, options: nil)
         newARView.translatesAutoresizingMaskIntoConstraints = false
         newARView.arViewDelegate = self
         newARView.locationEstimateMethod = locationEstimateMethod
-
-        newARView.debugOptions = [.showWorldOrigin]
+        newARView.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
-        //
-        //
+        print(newARView.arTrackingType)
+        print("orientation vs world tracking")
+        /*
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal]
+        newARView.session.run(configuration)
+        
+        let circleNode = createSphereNode(with: 0.2, color: .red)
+        circleNode.position = SCNVector3(0, 0, 2) // 1 meter in front of camera
+        newARView.scene.rootNode.addChildNode(circleNode)*/
+        
         
         contentView.addSubview(newARView)
         arView = newARView
-    }/*
+        
+        
+    }
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        
-        
         // Add the visualization to the ARKit-managed node so that it tracks
         // changes in the plane anchor as plane estimation continues.
         print("Hello")
-    }*/
+    }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refactorScene()
-        //
+        /*
         let circleNode = createSphereNode(with: 0.2, color: .red)
         circleNode.position = SCNVector3(0, 0, 2) // 1 meter in front of camera
         arView.scene.rootNode.addChildNode(circleNode)
-        print("Whats goood")
-        //
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal]
+        arView?.session.run(configuration)
+        arView.arViewDelegate = self
+        arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        */
         arView?.run()
+        
         // draw the AR scene
     }
     
