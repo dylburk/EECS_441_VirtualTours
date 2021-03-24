@@ -5,10 +5,12 @@ struct NearbyStore {
     let phoneNumberKey = "phoneNumber"
     func getNearby(refresh: @escaping () -> (),
                    completion: @escaping () -> ()) {
+
         var modifiedUrl = serverUrl
         let defaults = UserDefaults.standard
         if let phoneNumberValue = defaults.string(forKey: phoneNumberKey) {
                     modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
+                    modifiedUrl = modifiedUrl + "&lat=42.279343&long=-83.740889"
                     print(modifiedUrl)
         } else {
             return

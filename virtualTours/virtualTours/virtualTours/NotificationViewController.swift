@@ -27,6 +27,10 @@ class NotificationViewController: UIViewController {
     @IBAction func myPhoneNumberButton(_ sender: UIButton) {
         let defaults = UserDefaults.standard
         defaults.setValue(myPhoneNumber.text, forKey: phoneNumberKey)
+        self.getNearbySMS()
+    }
+    
+    func getNearbySMS() {
         let store = NearbyStore()
         store.getNearby(refresh: {}, completion: {})
     }
@@ -35,5 +39,7 @@ class NotificationViewController: UIViewController {
             super.didReceiveMemoryWarning()
             // Dispose of any resources that can be recreated.
         }
+    
+    
 
 }
