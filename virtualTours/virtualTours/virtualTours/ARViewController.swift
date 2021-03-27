@@ -13,6 +13,23 @@ import MapKit
 import ARCL
 import CoreLocation
 
+
+
+
+public extension SceneLocationView {
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        // Create a custom object to visualize the plane geometry and extent.
+        
+        // Add the visualization to the ARKit-managed node so that it tracks
+        // changes in the plane anchor as plane estimation continues. // Add the visualization to the ARKit-managed node so that it tracks
+        // changes in the plane anchor as plane estimation continues.
+        print("Hello")
+    }
+}
+
+
 class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, CLLocationManagerDelegate{
 
     
@@ -81,7 +98,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
     
     func refactorScene(){
         arView?.removeFromSuperview()
-        let newARView = SceneLocationView.init(frame: contentView.frame, options: nil)
+        //let newARView = SceneLocationView.init(frame: contentView.frame, options: nil)
+        let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
         newARView.translatesAutoresizingMaskIntoConstraints = false
         newARView.arViewDelegate = self
         newARView.locationEstimateMethod = locationEstimateMethod
@@ -108,6 +126,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         // Add the visualization to the ARKit-managed node so that it tracks
         // changes in the plane anchor as plane estimation continues.
+        guard anchor is ARPlaneAnchor else { return }
         print("Hello")
     }
     
@@ -248,6 +267,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
         
+        print("printing landmark 1")
+        print(landmark)
+        print("printing landmark 2")
         
         print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
         
@@ -339,13 +361,25 @@ class ARViewController: UIViewController, ARSCNViewDelegate,ARSessionDelegate, C
 //    }
 
 }
+extension UIFont {
+    func withTraits(traits:UIFontDescriptor.SymbolicTraits) -> UIFont {
+        let descriptor = fontDescriptor.withSymbolicTraits(traits)
+        return UIFont(descriptor: descriptor!, size: 0) //size 0 means keep the size as it is
+    }
+
+    func bold() -> UIFont {
+        return withTraits(traits: .traitBold)
+    }
+}
 
 extension UIView {
     /// Create a colored view with label, border, and rounded corners.
     class func prettyLabeledView(text: String,
                                  backgroundColor: UIColor = .systemBackground,
                                  borderColor: UIColor = .clear) -> UIView {
-        let font = UIFont.preferredFont(forTextStyle: .title2)
+        //
+        let font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        //
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (text as NSString).size(withAttributes: fontAttributes)
         
@@ -354,19 +388,27 @@ extension UIView {
 
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-
+        //
+        label.textColor = .black
+        //
         let attributedString = NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: font])
         label.attributedText = attributedString
         label.textAlignment = .center
         label.adjustsFontForContentSizeCategory = true
-
+        
+        /*
+        let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 20, height: label.frame.height + 10)*/
+        
         let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 20, height: label.frame.height + 10)
+        
         let cview = UIView(frame: cframe)
         cview.translatesAutoresizingMaskIntoConstraints = false
         cview.layer.cornerRadius = 10
-        cview.layer.backgroundColor = backgroundColor.cgColor
-        cview.layer.borderColor = borderColor.cgColor
-        cview.layer.borderWidth = 1
+        cview.layer.backgroundColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        //cview.layer.backgroundColor = backgroundColor.cgColor
+        //cview.layer.borderColor = borderColor.cgColor
+        cview.layer.borderColor = UIColor.black.cgColor
+        cview.layer.borderWidth = 2
         cview.addSubview(label)
         label.center = cview.center
 
