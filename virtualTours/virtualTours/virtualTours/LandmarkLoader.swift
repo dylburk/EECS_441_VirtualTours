@@ -24,6 +24,52 @@ struct LandmarkLoader {
         
         let uri = apiURL + "longitude=\(long)&latitude=\(lat)"
         
+        print(uri)
+        
+        let url = URL(string: uri)!
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let dataTask = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print(error)
+            } else if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    print(data!)
+                    do {
+                        let responseObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                        guard let responseDict = responseObject as? NSDictionary else {
+                            return
+                        }
+                        
+                        //print("RESPONSE:")
+                        //print(responseDict)
+                    
+                        handler(responseDict, nil)
+
+                    } catch let error as NSError {
+                        handler(nil, error)
+                    }
+                }
+            }
+        }
+
+        dataTask.resume()
+    }
+
+}
+
+struct landmarkinfo {
+    let apiURL = "https://pusio2l3ad.execute-api.us-east-2.amazonaws.com/landmark?"
+    
+    func loadLandmark(id: String, radius: Int = 20, handler: @escaping (NSDictionary?, NSError?) -> Void) {
+        
+        print("loading landmark info")
+        
+        
+        
+        let uri = apiURL + "id=\(id)"
+        
+        print(uri)
+        
         let url = URL(string: uri)!
         let session = URLSession(configuration: URLSessionConfiguration.default)
         let dataTask = session.dataTask(with: url) { data, response, error in
