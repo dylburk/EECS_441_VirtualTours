@@ -73,7 +73,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iDM-oG-WS0">
                                 <rect key="frame" x="36" y="144" width="342" height="608"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vxA-aO-vzs">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vxA-aO-vzs">
                                         <rect key="frame" x="28" y="23" width="257" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="257" id="8Zh-pG-WQB"/>
@@ -190,6 +190,7 @@
                     </view>
                     <connections>
                         <outlet property="IDLabel" destination="Y1N-ro-QQ2" id="Ufh-Br-dab"/>
+                        <outlet property="titleLabel" destination="vxA-aO-vzs" id="rzA-wv-Kvh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Azo-3w-KJE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

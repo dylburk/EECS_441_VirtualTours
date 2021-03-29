@@ -12,7 +12,7 @@ struct LandmarkInfoLoader {
     
     let apiURL = "https://pusio2l3ad.execute-api.us-east-2.amazonaws.com/landmark?"
     
-    func loadLandmarks(id: String, handler: @escaping (NSDictionary?, NSError?) -> Void) {
+    func loadLandmark(id: String, handler: @escaping (LandmarkInfo?, NSError?) -> Void) {
         
         print("loading landmark info")
         
@@ -29,10 +29,29 @@ struct LandmarkInfoLoader {
                     do {
                         let responseObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
                         guard let responseDict = responseObject as? NSDictionary else {
+                            handler(nil, NSError())
                             return
                         }
                         
-                        handler(responseDict, nil)
+                        guard let result = responseDict.object(forKey: "landmark") as? NSDictionary  else {
+                            handler(nil, NSError())
+                            return
+                        }
+                        
+                        print(result)
+                        
+                        let name = result.object(forKey: "name") as! String
+                        let types = result.object(forKey: "types") as! [String]
+                        let description = "This is a description"
+                        let address = result.object(forKey: "address") as! String
+                        let website = result.object(forKey: "website") as! String
+                        let rating = result.object(forKey: "rating") as! Double
+                        let map = result.object(forKey: "map") as! String
+                        
+                        let landmarkInfo = LandmarkInfo(id: id, name: name, types: types, description: description,
+                                                        address: address, website: website, rating: rating, map: map)
+                        
+                        handler(landmarkInfo, nil)
 
                     } catch let error as NSError {
                         handler(nil, error)

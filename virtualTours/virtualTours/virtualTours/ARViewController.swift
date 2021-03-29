@@ -168,12 +168,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
+                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    /*let latitude = 42.195942
-                    let longitude = -85.713417*/
+                    let latitude = 42.195942
+                    let longitude = -85.713417
                     //let title = "Gamer Zone"
 
                     let landmark = Landmark(latitude: latitude,
@@ -181,7 +181,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id)
                     self.landmarks.append(landmark)
-                    //break
+                    break
                 }
                 print("LANDMARKS:")
                 print(self.landmarks!)
@@ -230,7 +230,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let popupVC = storyboard.instantiateViewController(withIdentifier: "LandmarkInfo") as! LIViewController
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
-        popupVC.setIDText(text: node.tag)
+        popupVC.setID(id: node.tag)
         present(popupVC, animated: true, completion: nil)
     }
     
