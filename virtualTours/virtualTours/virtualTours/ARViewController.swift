@@ -23,8 +23,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
-    let locationUpdateFilter = 10.0
+    let locationUpdateFilter = 5.0
     let landmarkUpdateFilter = 30.0
+    
+    let arRadius = 30.0
+    
+    let eastMultiplier = 75000.0
+    let northMultiplier = 95000.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
     public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
@@ -103,10 +108,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
             print("locationManager refreshed")
-            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter) {
+            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
-                landmarks = []
                 arView.removeAllNodes()
                 self.updateLandmarks()
             }
@@ -116,12 +120,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 arView.removeAllNodes()
                 self.addLandmarks(lastLocation)
             }
-            
-//            print("My Location: ", lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
-//            landmarks = []
-//            arView?.removeAllNodes()
-//            self.updateLandmarks()
-//            print(lastLocation.distance(from: locations.last!))
 
         }
     }
@@ -167,7 +165,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("landmarks: ", landmarks.count)
         
         for landmark in landmarks {
-            print(landmark.title)
+            //print(landmark.title)
             addLandmarkToARScene(currentLocation: currentLocation, landmark: landmark)
         }
 
@@ -209,16 +207,21 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("Adding landmark")
         
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
-        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) *  95000
-        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * 75000
+        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) * (northMultiplier)
+        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * (eastMultiplier)
+        
         
         
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
         
-        
-        //print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
+        let distance = currentLocation.distance(from: location)
+        if(distance > arRadius){
+            print("Too far to \(landmark.title): (\(distance)m")
+            return
+        }
+        print("Close enough to \(landmark.title): (\(distance)m")
         
         DispatchQueue.main.async {
             let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
