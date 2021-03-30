@@ -20,9 +20,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     var arView: SceneLocationView!
     let locationManager = CLLocationManager()
+    var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
-    let updateDeltaMeters = 10.0
+    let locationUpdateFilter = 10.0
+    let landmarkUpdateFilter = 30.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
     public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
@@ -49,7 +51,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
         locationManager.startUpdatingLocation()
         locationManager.requestWhenInUseAuthorization()
         
@@ -101,20 +102,33 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
-            if (lastLocation.distance(from: locations.last!) < updateDeltaMeters) { return }
-            lastLocation = locations.last!
-            print("My Location: ", lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
-            landmarks = []
-            arView?.removeAllNodes()
-            self.updateLandmarks()
-            print(lastLocation.distance(from: locations.last!))
+            print("locationManager refreshed")
+            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter) {
+                lastLandmarkUpdate = locations.last!
+                print("retrieving from backend")
+                landmarks = []
+                arView.removeAllNodes()
+                self.updateLandmarks()
+            }
+            else if (lastLocation.distance(from: locations.last!) > locationUpdateFilter) {
+                lastLocation = locations.last!
+                print("updating location")
+                arView.removeAllNodes()
+                self.addLandmarks(lastLocation)
+            }
+            
+//            print("My Location: ", lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
+//            landmarks = []
+//            arView?.removeAllNodes()
+//            self.updateLandmarks()
+//            print(lastLocation.distance(from: locations.last!))
 
         }
     }
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
-            print("refactoring height")
+            //print("refactoring height")
             annoNode.annotationHeightAdjustmentFactor = annotationHeightAdjustmentFactor
         }
         node.scalingScheme = scalingScheme
@@ -126,7 +140,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
-                print("getting landmarks")
+                //print("getting landmarks")
             }
             return
         }
@@ -145,12 +159,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     
     func addLandmarks(_ currentLocation: CLLocation){
-        print("Adding landmarks")
+        //print("Adding landmarks")
         if landmarks.isEmpty {
             return
         }
         
-        print("landmarks: ", landmarks.count)
+        //print("landmarks: ", landmarks.count)
         
         for landmark in landmarks {
             print(landmark.title)
@@ -183,7 +197,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     self.landmarks.append(landmark)
                     //break
                 }
-                print("LANDMARKS:")
+                //print("LANDMARKS:")
                 print(self.landmarks!)
                 handler(nil)
             }
@@ -192,7 +206,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
         
-        print("Adding landmark")
+        //print("Adding landmark")
         
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
         let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) *  95000
@@ -204,7 +218,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let color = colors[colorIndex % colors.count]
         
         
-        print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
+        //print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
         
         DispatchQueue.main.async {
             let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
@@ -224,8 +238,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
-        print("Annotation Tap")
-        print(node.tag)
+        //print("Annotation Tap")
+        //print(node.tag)
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let popupVC = storyboard.instantiateViewController(withIdentifier: "LandmarkInfo") as! LIViewController
         popupVC.modalPresentationStyle = .overCurrentContext
@@ -235,8 +249,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     @objc func locationNodeTouched(node: LocationNode) {
-        print("Location Tap")
-        print(node.tag!)
+        //print("Location Tap")
+        //print(node.tag!)
     }
 
 }
