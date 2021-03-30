@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "cafe.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

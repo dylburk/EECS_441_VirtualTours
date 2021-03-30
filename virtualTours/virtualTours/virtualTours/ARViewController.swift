@@ -164,6 +164,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
+                print(dict)
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
@@ -175,11 +176,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     /*let latitude = 42.195942
                     let longitude = -85.713417*/
                     //let title = "Gamer Zone"
+                    let types = item.object(forKey: "types") as! [Any]
 
                     let landmark = Landmark(latitude: latitude,
                                        longitude: longitude,
                                        title: title,
-                                       id: id)
+                                       id: id,
+                                       types: types)
+                    print(landmark)
                     self.landmarks.append(landmark)
                     //break
                 }
@@ -204,20 +208,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
-        
+        //let type = landmark.types[1]
+        let type = landmark.types[1] as! String
         
         print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
         
-        let id = landmark.id
-        self.getlandmarkinfo(id: id) { error in
-            if (error != nil) {
-                print(error!)
-                return
-            }
-        }
         
         DispatchQueue.main.async {
-            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75))
+            let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75), type: type)
 
             let laNode = LocationAnnotationNode(location: location, view: labeledView)
             laNode.tag = landmark.id
@@ -231,19 +229,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
         }
     }
-
-    func getlandmarkinfo(id: String, handler: @escaping (NSError?) -> Void) {
-        print("in get landmarkinfo")
-        let loader = landmarkinfo()
-        
-        loader.loadLandmark(id: id) { landmarkDict, error in
-            if let dict = landmarkDict {
-                print(dict)
-            }
-        }
-    }
-    
-    
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
         print("Annotation Tap")
@@ -276,35 +261,26 @@ extension UIView {
     /// Create a colored view with label, border, and rounded corners.
     class func prettyLabeledView(text: String,
                                  backgroundColor: UIColor = .systemBackground,
-                                 borderColor: UIColor = .clear) -> UIView {
-        //
+                                 borderColor: UIColor = .clear,
+                                 type: String) -> UIView {
+        
         let font = UIFont.preferredFont(forTextStyle: .title2).bold()
-        //
+        
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (text as NSString).size(withAttributes: fontAttributes)
         
-//        print("SIZES:")
-//        print(size.width, size.height)
+        /*
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))*/
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        //
-        label.textColor = .black
-        //
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
+        
         let attributedString = NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: font])
         
+        label.textColor = .black
+        label.numberOfLines = 0
         label.attributedText = attributedString
         label.textAlignment = .center
         label.adjustsFontForContentSizeCategory = true
-        
-        
-        let imageView = UIImageView();
-        let image = UIImage(image: "map");
-        imageView.image = image;
-        
-
-        
-        /*
-        let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 20, height: label.frame.height + 10)*/
         
         let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 20, height: label.frame.height + 10)
         
@@ -312,14 +288,21 @@ extension UIView {
         cview.translatesAutoresizingMaskIntoConstraints = false
         cview.layer.cornerRadius = 10
         cview.layer.backgroundColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        //cview.layer.backgroundColor = backgroundColor.cgColor
-        //cview.layer.borderColor = borderColor.cgColor
         cview.layer.borderColor = UIColor.black.cgColor
-        cview.layer.borderWidth = 2
+        cview.layer.borderWidth = 7
+        
+        print(type)
+        let Image = UIImage(named: type)
+        // cview.frame.width / 2
+        let Imageframe = CGRect(x: 85, y: cview.frame.height - 80, width: 50, height: 50)
+        let myImageView = UIImageView()
+        myImageView.image = Image
+        myImageView.frame = Imageframe
+        
         cview.addSubview(label)
-        cview.addSubview(imageView)
+        cview.addSubview(myImageView)
+        
         label.center = cview.center
-
         return cview
     }
 
