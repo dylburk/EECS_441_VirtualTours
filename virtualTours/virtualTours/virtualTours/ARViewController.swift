@@ -31,6 +31,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     public var continuallyUpdatePositionAndScale = true
     public var annotationHeightAdjustmentFactor = 1.0
     public var colorIndex = 0
+    public var supported_types = ["cafe", "establishment", "restaurant", "school"]
     
     var landmarks : [Landmark]! = []
     
@@ -208,8 +209,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
-        //let type = landmark.types[1]
-        let type = landmark.types[1] as! String
+        
+        var type = String()
+        for (_, supported_type) in landmark.types.enumerated() {
+            if (self.supported_types.contains(supported_type as! String)) {
+                type = supported_type as! String
+            }
+        }
+        type = "point_of_interest"
         
         print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
         
@@ -265,36 +272,28 @@ extension UIView {
                                  type: String) -> UIView {
         
         let font = UIFont.preferredFont(forTextStyle: .title2).bold()
-        
-        let fontAttributes = [NSAttributedString.Key.font: font]
-        let size = (text as NSString).size(withAttributes: fontAttributes)
-        
-        /*
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))*/
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
-        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 110, height: 30))
         let attributedString = NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: font])
         
         label.textColor = .black
         label.numberOfLines = 0
         label.attributedText = attributedString
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.adjustsFontForContentSizeCategory = true
+        label.font = label.font.withSize(8)
+
         
-        let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 20, height: label.frame.height + 10)
+        let cframe = CGRect(x: 0, y: 0, width: label.frame.width + 45, height: label.frame.height + 10)
         
         let cview = UIView(frame: cframe)
         cview.translatesAutoresizingMaskIntoConstraints = false
         cview.layer.cornerRadius = 10
         cview.layer.backgroundColor = UIColor.white.withAlphaComponent(0.3).cgColor
         cview.layer.borderColor = UIColor.black.cgColor
-        cview.layer.borderWidth = 7
+        cview.layer.borderWidth = 1
         
-        print(type)
         let Image = UIImage(named: type)
-        // cview.frame.width / 2
-        let Imageframe = CGRect(x: 85, y: cview.frame.height - 80, width: 50, height: 50)
+        let Imageframe = CGRect(x: 130, y: cview.frame.height - 27, width: 15, height: 15)
         let myImageView = UIImageView()
         myImageView.image = Image
         myImageView.frame = Imageframe
