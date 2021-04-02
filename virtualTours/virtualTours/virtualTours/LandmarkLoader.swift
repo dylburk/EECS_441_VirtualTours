@@ -24,6 +24,8 @@ struct LandmarkLoader {
         
         let uri = apiURL + "longitude=\(long)&latitude=\(lat)"
         
+        print(uri)
+        
         let url = URL(string: uri)!
         let session = URLSession(configuration: URLSessionConfiguration.default)
         let dataTask = session.dataTask(with: url) { data, response, error in
@@ -39,7 +41,7 @@ struct LandmarkLoader {
                         }
                         
                         //print("RESPONSE:")
-                        //print(responseDict)
+                        //(responseDict)
                     
                         handler(responseDict, nil)
 
