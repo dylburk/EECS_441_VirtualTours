@@ -20,9 +20,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     var arView: SceneLocationView!
     let locationManager = CLLocationManager()
+    var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
-    let updateDeltaMeters = 10.0
+    let locationUpdateFilter = 5.0
+    let landmarkUpdateFilter = 30.0
+    
+    let arRadius = 30.0
+    
+    let eastMultiplier = 75000.0
+    let northMultiplier = 95000.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
     public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
@@ -50,7 +57,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
         locationManager.startUpdatingLocation()
         locationManager.requestWhenInUseAuthorization()
         
@@ -102,20 +108,26 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
-            if (lastLocation.distance(from: locations.last!) < updateDeltaMeters) { return }
-            lastLocation = locations.last!
-            print("My Location: ", lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
-            landmarks = []
-            arView?.removeAllNodes()
-            self.updateLandmarks()
-            print(lastLocation.distance(from: locations.last!))
+            print("locationManager refreshed")
+            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
+                lastLandmarkUpdate = locations.last!
+                print("retrieving from backend")
+                arView.removeAllNodes()
+                self.updateLandmarks()
+            }
+            else if (lastLocation.distance(from: locations.last!) > locationUpdateFilter) {
+                lastLocation = locations.last!
+                print("updating location")
+                arView.removeAllNodes()
+                self.addLandmarks(lastLocation)
+            }
 
         }
     }
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
-            print("refactoring height")
+            //print("refactoring height")
             annoNode.annotationHeightAdjustmentFactor = annotationHeightAdjustmentFactor
         }
         node.scalingScheme = scalingScheme
@@ -127,7 +139,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
-                print("getting landmarks")
+                //print("getting landmarks")
             }
             return
         }
@@ -146,15 +158,15 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     
     func addLandmarks(_ currentLocation: CLLocation){
-        print("Adding landmarks")
+        //print("Adding landmarks")
         if landmarks.isEmpty {
             return
         }
         
-        print("landmarks: ", landmarks.count)
+        //print("landmarks: ", landmarks.count)
         
         for landmark in landmarks {
-            print(landmark.title)
+            //print(landmark.title)
             addLandmarkToARScene(currentLocation: currentLocation, landmark: landmark)
         }
 
@@ -188,7 +200,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     self.landmarks.append(landmark)
                     //break
                 }
-                print("LANDMARKS:")
+                //print("LANDMARKS:")
                 print(self.landmarks!)
                 handler(nil)
             }
@@ -197,19 +209,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
         
-        print("Adding landmark")
-        print("landmark information")
-        print(landmark)
         
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
-        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) *  95000
-        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * 75000
+        let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) * (northMultiplier)
+        let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * (eastMultiplier)
+        
         
         
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
-        
         var type = String()
         for (_, supported_type) in landmark.types.enumerated() {
             if (self.supported_types.contains(supported_type as! String)) {
@@ -218,7 +227,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         }
         type = "point_of_interest"
         
-        print("Distance to \(landmark.title): (\(northOffset)m, \(eastOffset)m)")
+        let distance = currentLocation.distance(from: location)
+        if(distance > arRadius){
+            print("Too far to \(landmark.title): (\(distance)m")
+            return
+        }
+        print("Close enough to \(landmark.title): (\(distance)m")
         
         
         DispatchQueue.main.async {
@@ -238,8 +252,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
-        print("Annotation Tap")
-        print(node.tag)
+        //print("Annotation Tap")
+        //print(node.tag)
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let popupVC = storyboard.instantiateViewController(withIdentifier: "LandmarkInfo") as! LIViewController
         popupVC.modalPresentationStyle = .overCurrentContext
@@ -249,8 +263,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     @objc func locationNodeTouched(node: LocationNode) {
-        print("Location Tap")
-        print(node.tag!)
+        //print("Location Tap")
+        //print(node.tag!)
     }
 
 }

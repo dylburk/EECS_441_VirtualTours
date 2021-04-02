@@ -14,13 +14,13 @@ struct LandmarkLoader {
     
     func loadLandmarks(location: CLLocation, radius: Int = 20, handler: @escaping (NSDictionary?, NSError?) -> Void) {
         
-        print("loading landmarks")
+        //print("loading landmarks")
         
         let lat = location.coordinate.latitude
         let long = location.coordinate.longitude
         
-        /*let lat = 42.279343
-        let long = -83.740889*/
+//        let lat = 42.279343
+//        let long = -83.740889
         
         let uri = apiURL + "longitude=\(long)&latitude=\(lat)"
         
