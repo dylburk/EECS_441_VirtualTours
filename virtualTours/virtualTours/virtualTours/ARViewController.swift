@@ -151,6 +151,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 return
             }
             self.colorIndex += 1
+            self.arView.removeAllNodes()
             self.addLandmarks(currentLocation)
             //self.addDynamicNodes(currentLocation)
         }
@@ -182,12 +183,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
+                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    /*let latitude = 42.195942
-                    let longitude = -85.713417*/
+                    let latitude = 35.495540
+                    let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
@@ -198,7 +199,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     print(landmark)
                     self.landmarks.append(landmark)
-                    //break
+                    break
                 }
                 //print("LANDMARKS:")
                 print(self.landmarks!)
@@ -258,7 +259,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let popupVC = storyboard.instantiateViewController(withIdentifier: "LandmarkInfo") as! LIViewController
         popupVC.modalPresentationStyle = .overCurrentContext
         popupVC.modalTransitionStyle = .crossDissolve
-        popupVC.setIDText(text: node.tag)
+        popupVC.setID(id: node.tag)
         present(popupVC, animated: true, completion: nil)
     }
     
