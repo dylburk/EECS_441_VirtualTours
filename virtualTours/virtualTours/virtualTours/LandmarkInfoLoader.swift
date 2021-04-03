@@ -8,7 +8,9 @@
 import CoreLocation
 import Foundation
 
-struct LandmarkInfoLoader {
+class LandmarkInfoLoader {
+    
+    static var cache = [String:LandmarkInfo]()
     
     let apiURL = "https://pusio2l3ad.execute-api.us-east-2.amazonaws.com/landmark?"
     
@@ -16,16 +18,24 @@ struct LandmarkInfoLoader {
         
         print("loading landmark info")
         
+        print(LandmarkInfoLoader.cache)
+        
+        if let cachedObject = LandmarkInfoLoader.cache[id] {
+            handler(cachedObject, nil)
+            return
+        }
+        
         let uri = apiURL + "id=\(id)"
         
         let url = URL(string: uri)!
         let session = URLSession(configuration: URLSessionConfiguration.default)
         let dataTask = session.dataTask(with: url) { data, response, error in
+            print("FINISHED")
             if let error = error {
                 print(error)
             } else if let httpResponse = response as? HTTPURLResponse {
+                print(data!)
                 if httpResponse.statusCode == 200 {
-                    print(data!)
                     do {
                         let responseObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
                         guard let responseDict = responseObject as? NSDictionary else {
@@ -47,9 +57,19 @@ struct LandmarkInfoLoader {
                         let website = result.object(forKey: "website") as! String
                         let rating = result.object(forKey: "rating") as! Double
                         let map = result.object(forKey: "map") as! String
+                        let phone = result.object(forKey: "phone") as! String
+                        
+                        guard let hours = result.object(forKey: "hours") as? NSDictionary  else {
+                            handler(nil, NSError())
+                            return
+                        }
+                        
+                        let open = hours.object(forKey: "open_now") as! Bool
                         
                         let landmarkInfo = LandmarkInfo(id: id, name: name, types: types, description: description,
-                                                        address: address, website: website, rating: rating, map: map)
+                                                        address: address, website: website, rating: rating, phone: phone, map: map, open: open)
+                        
+                        LandmarkInfoLoader.cache[id] = landmarkInfo
                         
                         handler(landmarkInfo, nil)
 

@@ -15,5 +15,7 @@ struct LandmarkInfo {
     let address : String
     let website : String
     let rating : Double
+    let phone : String
     let map : String
+    let open : Bool
 }

@@ -11,7 +11,12 @@ import UIKit
 class LIViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var IDLabel: UILabel!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var descLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var hoursLabel: UILabel!
+    @IBOutlet weak var websiteLabel: UILabel!
+    @IBOutlet weak var ratingLabel: UILabel!
     
     var id : String = ""
     
@@ -45,6 +50,23 @@ class LIViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.titleLabel.text = info.name
+            self.descLabel.text = "Temp Sample Text"
+            if !info.types.isEmpty {
+                self.typeLabel.text = info.types[0]
+            } else {
+                self.typeLabel.text = "NULL"
+            }
+            self.addressLabel.text = "Address: " + info.address
+            
+            let openString = info.open ? "Open" : "Closed"
+            let hoursString = NSMutableAttributedString(string: "Hours: " + openString,
+                                                        attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                                                                     NSAttributedString.Key.foregroundColor: UIColor.black])
+            hoursString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemGreen, range: NSRange(location:7,length:4))
+            self.hoursLabel.attributedText = hoursString
+            
+            self.ratingLabel.text = "Rating: " + String(info.rating)
+            self.websiteLabel.text = "Website: " + info.website
         }
     }
     

@@ -151,6 +151,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 return
             }
             self.colorIndex += 1
+            self.arView.removeAllNodes()
             self.addLandmarks(currentLocation)
             //self.addDynamicNodes(currentLocation)
         }
@@ -186,8 +187,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    let latitude = 42.195942
-                    let longitude = -85.713417
+                    let latitude = 35.495540
+                    let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
