@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import ARKit
 import SceneKit
+import RealityKit
 import MapKit
 import ARCL
 import CoreLocation
@@ -19,6 +20,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     @IBOutlet weak var contentView: UIView!
     
     var arView: SceneLocationView!
+    
+    var planeView: ARSCNView!
+    
     let locationManager = CLLocationManager()
     var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
@@ -38,7 +42,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     public var continuallyUpdatePositionAndScale = true
     public var annotationHeightAdjustmentFactor = 1.0
     public var colorIndex = 0
-    public var supported_types = ["cafe", "establishment", "restaurant", "school"]
+    public var supported_types = ["cafe", "establishment", "restaurant", "school", "bank"]
     
     var landmarks : [Landmark]! = []
     
@@ -79,7 +83,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.locationNodeTouchDelegate = self
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        newARView.debugOptions = [.showWorldOrigin]
+        newARView.debugOptions = []
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -89,8 +93,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.vertical]
+        configuration.isLightEstimationEnabled = true
+        
         refactorScene()
-        arView?.run()
+        arView?.session.run(configuration)
         // draw the AR scene
     }
     
@@ -196,12 +205,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id,
                                        types: types)
-                    print(landmark)
+                    //print(landmark)
                     self.landmarks.append(landmark)
                     //break
                 }
                 //print("LANDMARKS:")
-                print(self.landmarks!)
+                //print(self.landmarks!)
                 handler(nil)
             }
         }
@@ -216,40 +225,58 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         
         
+        
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
         var type = String()
+        type = "point_of_interest"
         for (_, supported_type) in landmark.types.enumerated() {
             if (self.supported_types.contains(supported_type as! String)) {
                 type = supported_type as! String
             }
         }
-        type = "point_of_interest"
         
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
-            print("Too far to \(landmark.title): (\(distance)m")
-            return
+            //print("Too far to \(landmark.title): (\(distance)m")
+            //return
         }
-        print("Close enough to \(landmark.title): (\(distance)m")
+        //print("Close enough to \(landmark.title): (\(distance)m")
         
         
         DispatchQueue.main.async {
             let labeledView = UIView.prettyLabeledView(text: name, backgroundColor: color.withAlphaComponent(0.75), type: type)
-
+//
             let laNode = LocationAnnotationNode(location: location, view: labeledView)
             laNode.tag = landmark.id
             laNode.annotationNode.tag = landmark.id
             self.setNode(laNode)
+//
+//            if let query = self.arView.raycastQuery(from: laNode.accessibilityActivationPoint, allowing: ARRaycastQuery.Target.estimatedPlane, alignment: ARRaycastQuery.TargetAlignment.vertical),
+//            let raycastResult = self.arView.session.raycast(query).first {
+//                let transform = Transform(matrix: raycastResult.worldTransform)
+//                let raycastAnchor = AnchorEntity(raycastResult: raycastResult)
+//
+//            }
+//
+
+            
+            
             let billboardConstraint = SCNBillboardConstraint()
             billboardConstraint.freeAxes = SCNBillboardAxis.Y
             laNode.constraints = [billboardConstraint]
-        
             // add node to AR scene
             self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            
+//            let plane = SCNPlane()
+//            plane.firstMaterial?.diffuse.contents = labeledView
+//
+//            let planeNode = SCNNode(geometry: plane)
         }
     }
+    
+    
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
         //print("Annotation Tap")
@@ -266,6 +293,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("Location Tap")
         //print(node.tag!)
     }
+    
+    
 
 }
 extension UIFont {
