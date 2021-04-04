@@ -1,17 +1,22 @@
 import Foundation
+import CoreLocation
 
 struct NearbyStore {
+    static let urlSession = URLSession(configuration: .default)
     private let serverUrl = "https://xy62cwh158.execute-api.us-east-2.amazonaws.com/nearbySMS"
     let phoneNumberKey = "phoneNumber"
-    func getNearby(refresh: @escaping () -> (),
+    func getNearby(currentLocation: CLLocation,
+                   refresh: @escaping () -> (),
                    completion: @escaping () -> ()) {
-
+        let lat = String(format: "%.6f", currentLocation.coordinate.latitude)
+        let long = String(format: "%.6f", currentLocation.coordinate.longitude)
+        print(lat)
         var modifiedUrl = serverUrl
         let defaults = UserDefaults.standard
         if let phoneNumberValue = defaults.string(forKey: phoneNumberKey) {
-                    modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
-                    modifiedUrl = modifiedUrl + "&lat=42.279343&long=-83.740889"
-                    print(modifiedUrl)
+            modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
+            modifiedUrl = modifiedUrl + "&lat=" + lat + "&long=" + long
+            print(modifiedUrl)
         } else {
             return
         }
