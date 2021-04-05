@@ -38,7 +38,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     public var continuallyUpdatePositionAndScale = true
     public var annotationHeightAdjustmentFactor = 1.0
     public var colorIndex = 0
-    public var supported_types = ["cafe", "establishment", "restaurant", "school"]
+    public var supported_types = ["cafe", "establishment", "restaurant", "school", "bank"]
     
     var landmarks : [Landmark]! = []
     
@@ -108,7 +108,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
-            print("locationManager refreshed")
+            //print("locationManager refreshed")
             if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
@@ -221,12 +221,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
         var type = String()
+        type = "point_of_interest"
         for (_, supported_type) in landmark.types.enumerated() {
             if (self.supported_types.contains(supported_type as! String)) {
                 type = supported_type as! String
             }
         }
-        type = "point_of_interest"
         
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
