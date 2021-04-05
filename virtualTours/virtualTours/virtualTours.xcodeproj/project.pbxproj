@@ -18,7 +18,7 @@
 		78E2A6E12611756300136414 /* LandmarkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E2A6E02611756300136414 /* LandmarkInfo.swift */; };
 		78E8DEAA260C17CE0059E321 /* LandmarkInfoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E8DEA9260C17CE0059E321 /* LandmarkInfoLoader.swift */; };
 		78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF5F4625FF00E9000DD024 /* NearbyStore.swift */; };
-		A0BE8DC225F5605A00F7A9F3 /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */; };
+		A0613E88260B2ECE00CE526F /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0613E87260B2ECE00CE526F /* NotificationViewController.swift */; };
 		C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745381C25FBDA5500D8399A /* LandmarkLoader.swift */; };
 		C745383525FBF5D900D8399A /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745383425FBF5D900D8399A /* Landmark.swift */; };
 /* End PBXBuildFile section */
@@ -39,7 +39,7 @@
 		78E2A6E02611756300136414 /* LandmarkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkInfo.swift; sourceTree = "<group>"; };
 		78E8DEA9260C17CE0059E321 /* LandmarkInfoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkInfoLoader.swift; sourceTree = "<group>"; };
 		78FF5F4625FF00E9000DD024 /* NearbyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyStore.swift; sourceTree = "<group>"; };
-		A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
+		A0613E87260B2ECE00CE526F /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		C745381C25FBDA5500D8399A /* LandmarkLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkLoader.swift; sourceTree = "<group>"; };
 		C745383425FBF5D900D8399A /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,13 +88,13 @@
 			children = (
 				3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */,
 				3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */,
-				A0BE8DC125F5605A00F7A9F3 /* CurrentLocation.swift */,
 				78FF5F4625FF00E9000DD024 /* NearbyStore.swift */,
 				3CB00B4725F2B51C002BB2A1 /* Main.storyboard */,
 				3CB00B4A25F2B51D002BB2A1 /* Assets.xcassets */,
 				3CB00B4C25F2B51D002BB2A1 /* LaunchScreen.storyboard */,
 				3CB00B4F25F2B51D002BB2A1 /* Info.plist */,
 				787969D725F58C7900BDEFFD /* ARViewController.swift */,
+				A0613E87260B2ECE00CE526F /* NotificationViewController.swift */,
 				C745381C25FBDA5500D8399A /* LandmarkLoader.swift */,
 				C745383425FBF5D900D8399A /* Landmark.swift */,
 				78E22474260AB3CA009E8992 /* LIViewController.swift */,
@@ -249,7 +249,7 @@
 				C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */,
 				78E2A6E12611756300136414 /* LandmarkInfo.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,
-				A0BE8DC225F5605A00F7A9F3 /* CurrentLocation.swift in Sources */,
+				A0613E88260B2ECE00CE526F /* NotificationViewController.swift in Sources */,
 				78E22475260AB3CA009E8992 /* LIViewController.swift in Sources */,
 				78E8DEAA260C17CE0059E321 /* LandmarkInfoLoader.swift in Sources */,
 				3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */,

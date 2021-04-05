@@ -1,11 +1,27 @@
 import Foundation
+import CoreLocation
 
 struct NearbyStore {
+    static let urlSession = URLSession(configuration: .default)
     private let serverUrl = "https://xy62cwh158.execute-api.us-east-2.amazonaws.com/nearbySMS"
-
-    func getNearby(refresh: @escaping () -> (),
+    let phoneNumberKey = "phoneNumber"
+    func getNearby(currentLocation: CLLocation,
+                   refresh: @escaping () -> (),
                    completion: @escaping () -> ()) {
-        guard let apiUrl = URL(string: serverUrl) else {
+        let lat = String(format: "%.6f", currentLocation.coordinate.latitude)
+        let long = String(format: "%.6f", currentLocation.coordinate.longitude)
+        print(lat)
+        var modifiedUrl = serverUrl
+        let defaults = UserDefaults.standard
+        if let phoneNumberValue = defaults.string(forKey: phoneNumberKey) {
+            modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
+            modifiedUrl = modifiedUrl + "&lat=" + lat + "&long=" + long
+            print(modifiedUrl)
+        } else {
+            return
+        }
+        
+        guard let apiUrl = URL(string: modifiedUrl) else {
             print("getChatts: Bad URL")
             return
         }

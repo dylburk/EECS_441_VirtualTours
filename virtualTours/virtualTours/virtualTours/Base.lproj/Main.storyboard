@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eOR-xL-kn7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eOR-xL-kn7">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -30,6 +30,9 @@
                                 <state key="normal" image="line.horizontal.3" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30"/>
                                 </state>
+                                <connections>
+                                    <segue destination="XTy-oy-pdV" kind="presentation" id="oo3-Vr-vEd"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoVector" translatesAutoresizingMaskIntoConstraints="NO" id="U3q-EG-2O5">
                                 <rect key="frame" x="344" y="31.5" width="50" height="50"/>
@@ -198,6 +201,66 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Azo-3w-KJE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1069.5652173913045" y="132.58928571428572"/>
+        </scene>
+        <!--NotificationSettings-->
+        <scene sceneID="8DH-ZR-LlV">
+            <objects>
+                <viewController title="NotificationSettings" id="XTy-oy-pdV" customClass="NotificationViewController" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="88n-Pz-cXl">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WIO-yS-Wfi">
+                                <rect key="frame" x="20" y="65" width="326" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="5kU-Xw-s0c"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="326" id="lCn-CN-5z1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Format (US): +15555555555" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rej-w2-kx5">
+                                <rect key="frame" x="44" y="175" width="326" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="326" id="GGh-ZM-b31"/>
+                                    <constraint firstAttribute="height" constant="34" id="WXt-nF-ec2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAb-kd-xWJ" userLabel="saveButton">
+                                <rect key="frame" x="319" y="20" width="90" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="NIY-ld-DqL"/>
+                                    <constraint firstAttribute="height" constant="36" id="Yrz-Hm-DgZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="myPhoneNumberButton:" destination="XTy-oy-pdV" eventType="touchUpInside" id="g0S-DQ-Yct"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ubk-xW-RFQ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ubk-xW-RFQ" firstAttribute="trailing" secondItem="PAb-kd-xWJ" secondAttribute="trailing" constant="5" id="16h-9k-yiR"/>
+                            <constraint firstAttribute="trailing" secondItem="rej-w2-kx5" secondAttribute="trailing" constant="44" id="27b-e7-E8G"/>
+                            <constraint firstItem="rej-w2-kx5" firstAttribute="top" secondItem="WIO-yS-Wfi" secondAttribute="bottom" constant="62" id="9dk-up-pqh"/>
+                            <constraint firstItem="WIO-yS-Wfi" firstAttribute="leading" secondItem="ubk-xW-RFQ" secondAttribute="leading" constant="20" id="E9v-f0-9Qw"/>
+                            <constraint firstItem="WIO-yS-Wfi" firstAttribute="top" secondItem="88n-Pz-cXl" secondAttribute="top" constant="65" id="gD7-9K-YYS"/>
+                            <constraint firstItem="PAb-kd-xWJ" firstAttribute="top" secondItem="ubk-xW-RFQ" secondAttribute="top" constant="20" id="hN3-3o-56Z"/>
+                            <constraint firstItem="rej-w2-kx5" firstAttribute="leading" secondItem="88n-Pz-cXl" secondAttribute="leading" constant="44" id="r7Z-AY-UhH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="myPhoneNumber" destination="rej-w2-kx5" id="JsX-X7-LrB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ccp-5t-d1S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1968.1159420289857" y="116.51785714285714"/>
         </scene>
     </scenes>
     <resources>

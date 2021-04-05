@@ -49,12 +49,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /*
-        // SMS notification
-        let store = NearbyStore()
-        store.getNearby(refresh: {}, completion: {})*/
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
