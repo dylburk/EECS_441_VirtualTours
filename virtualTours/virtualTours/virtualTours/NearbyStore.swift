@@ -22,7 +22,7 @@ struct NearbyStore {
         }
         
         guard let apiUrl = URL(string: modifiedUrl) else {
-            print("getChatts: Bad URL")
+            print("nearbySMS: Bad URL")
             return
         }
         
@@ -31,12 +31,8 @@ struct NearbyStore {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             defer { completion() }
-            guard let data = data, error == nil else {
-                print("getChatts: NETWORKING ERROR")
-                return
-            }
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                print("getChatts: HTTP STATUS: \(httpStatus.statusCode)")
+                print("nearbySMS: HTTP STATUS: \(httpStatus.statusCode)")
                 return
             }
             

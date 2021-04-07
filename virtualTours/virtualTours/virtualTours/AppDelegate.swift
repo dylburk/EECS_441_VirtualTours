@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "edu.umich.nkeller97.fetchNearby", using: nil){ //TODO: sync with nearby in-app
             (task) in self.handleAppRefreshTask(task: task as! BGAppRefreshTask)
         }
-            
         return true
         }
 
