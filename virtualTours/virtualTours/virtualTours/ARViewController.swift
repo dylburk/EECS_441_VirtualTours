@@ -32,7 +32,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let northMultiplier = 95000.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
-    public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
+    public var arTrackingType = SceneLocationView.ARTrackingType.worldTracking
     public var scalingScheme = ScalingScheme.normal
     public var continuallyAdjustNodePositionWhenWithinRange = true
     public var continuallyUpdatePositionAndScale = true
@@ -73,7 +73,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.locationNodeTouchDelegate = self
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        newARView.debugOptions = [.showWorldOrigin]
+        newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -101,9 +101,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //print("locationManager refreshed")
         if locations.count > 0 {
             //print("locationManager refreshed")
-            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
+            if (lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
                 arView.removeAllNodes()
@@ -131,6 +132,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func updateLandmarks() {
         guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
+            print("NEW THREAD")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
                 //print("getting landmarks")
@@ -172,17 +174,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
-                print(dict)
+                //print(dict)
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
 
-                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
+                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    let latitude = 35.495540
-                    let longitude = -80.979380
+                    //let latitude = 35.494711
+                    //let longitude = -80.979608
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
@@ -191,24 +193,21 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id,
                                        types: types)
-                    print(landmark)
+                    //print(landmark)
                     self.landmarks.append(landmark)
                     break
                 }
                 //print("LANDMARKS:")
-                print(self.landmarks!)
+                //print(self.landmarks!)
                 handler(nil)
             }
         }
     }
     
     func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
-        
-        
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
         let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) * (northMultiplier)
         let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * (eastMultiplier)
-        
         
         
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))

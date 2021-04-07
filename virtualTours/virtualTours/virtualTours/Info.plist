@@ -31,10 +31,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Get notifications of new nearby landmarks.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Get notifications of new nearby landmarks in background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Get notifications of new nearby landmarks.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -73,8 +73,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
