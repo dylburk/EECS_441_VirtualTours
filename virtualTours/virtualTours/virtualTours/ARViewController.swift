@@ -18,6 +18,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
     @IBOutlet weak var contentView: UIView!
     
+    
+    
     var arView: SceneLocationView!
     let locationManager = CLLocationManager()
     var lastLandmarkUpdate = CLLocation()
@@ -65,6 +67,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
     }
     
+    func getNearbySMS(currentLocation: CLLocation) {
+        let store = NearbyStore()
+        store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
+    }
+    
     func refactorScene(){
         arView?.removeFromSuperview()
         let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
@@ -107,6 +114,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
                 arView.removeAllNodes()
+                self.getNearbySMS(currentLocation: locations.last!)
                 self.updateLandmarks()
             }
             else if (lastLocation.distance(from: locations.last!) > locationUpdateFilter) {
@@ -118,6 +126,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
         }
     }
+    
+
+
+    
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
