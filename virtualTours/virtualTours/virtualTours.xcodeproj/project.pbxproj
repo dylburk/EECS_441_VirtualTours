@@ -21,6 +21,7 @@
 		A0613E88260B2ECE00CE526F /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0613E87260B2ECE00CE526F /* NotificationViewController.swift */; };
 		C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745381C25FBDA5500D8399A /* LandmarkLoader.swift */; };
 		C745383525FBF5D900D8399A /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745383425FBF5D900D8399A /* Landmark.swift */; };
+		C774F201261E26F7002CC3B7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C774F200261E26F7002CC3B7 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		A0613E87260B2ECE00CE526F /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		C745381C25FBDA5500D8399A /* LandmarkLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkLoader.swift; sourceTree = "<group>"; };
 		C745383425FBF5D900D8399A /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
+		C774F200261E26F7002CC3B7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				78E22474260AB3CA009E8992 /* LIViewController.swift */,
 				78E8DEA9260C17CE0059E321 /* LandmarkInfoLoader.swift */,
 				78E2A6E02611756300136414 /* LandmarkInfo.swift */,
+				C774F200261E26F7002CC3B7 /* SettingsViewController.swift */,
 			);
 			path = virtualTours;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 			files = (
 				C745383525FBF5D900D8399A /* Landmark.swift in Sources */,
 				78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */,
+				C774F201261E26F7002CC3B7 /* SettingsViewController.swift in Sources */,
 				C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */,
 				78E2A6E12611756300136414 /* LandmarkInfo.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,

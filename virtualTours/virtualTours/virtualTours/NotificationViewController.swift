@@ -13,7 +13,8 @@ import CoreLocation
 
 class NotificationViewController: UIViewController, CLLocationManagerDelegate {
 
-
+    // Moved to ARViewController OLD: CAN BE DELETED, LEFT FOR REFERENCE
+    
     @IBOutlet weak var myPhoneNumber: UITextField!
     let phoneNumberKey = "phoneNumber"
     let locationManager = CLLocationManager()
