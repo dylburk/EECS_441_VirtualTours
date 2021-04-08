@@ -20,8 +20,22 @@ extension SceneLocationView: ARSCNViewDelegate {
     public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         print("PLANE")
-        print(node.position)
-        node.addChildNode(SCNNode(geometry: SCNBox(width:0.1, height:0.1, length:0.1, chamferRadius: 0)))
+        
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let plane = SCNPlane(width: width, height: height)
+        
+        plane.materials.first?.diffuse.contents = UIColor.red
+        
+        let planeNode = SCNNode(geometry: plane)
+        
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+        planeNode.position = SCNVector3(x,y,z)
+        planeNode.eulerAngles.x = -.pi / 2
+        
+        node.addChildNode(planeNode)
         arViewDelegate?.renderer?(renderer, didAdd: node, for: anchor)
     }
 
@@ -134,6 +148,45 @@ extension SceneLocationView {
 
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         arViewDelegate?.renderer?(renderer, updateAtTime: time)
+        
+        if #available(iOS 13.0, *) {
+            for locationNode in locationNodes {
+                let sceneLocation = simd_float3(renderer.pointOfView!.worldPosition)
+                let dirVec = simd_float3(locationNode.directionVector!)
+                let raycastQuery = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
+                                    allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
+                let rayResult = self.session.raycast(raycastQuery)
+                if let result = rayResult.first  {
+                    guard let planeAnchor = result.anchor else {
+                        return
+                    }
+                    locationNode.continuallyAdjustNodePositionWhenWithinRange = false
+                    locationNode.continuallyUpdatePositionAndScale = false
+                    let pos = result.worldTransform
+                    let node = SCNNode(geometry: SCNBox(width:0.001, height:0.001, length:0.001, chamferRadius: 0))
+                    node.setWorldTransform(SCNMatrix4(pos))
+                    
+                    sceneNode!.addChildNode(node)
+                    locationNode.worldPosition = (node.worldPosition)
+                    locationNode.scale = SCNVector3(1,1,1)
+                    locationNode.childNodes.forEach { annotationNode in
+                        annotationNode.worldPosition = node.worldPosition
+                        annotationNode.scale = SCNVector3(0.1,0.1,0.1)
+                        annotationNode.childNodes.forEach { child in
+                            child.scale = SCNVector3(1,1,1)
+                        }
+                    }
+                    print("Successful raycast plane collision")
+                } else {
+                    locationNode.continuallyAdjustNodePositionWhenWithinRange = true
+                    locationNode.continuallyUpdatePositionAndScale = true
+                }
+                //print(locationNodes.first!.position)
+            }
+        } else {
+            print("Plane raycasting unsupported")
+            // Fallback on earlier versions
+        }
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {
@@ -151,35 +204,5 @@ extension SceneLocationView {
     public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         arViewDelegate?.renderer?(renderer, willRenderScene: scene, atTime: time)
         
-        if #available(iOS 13.0, *) {
-            for locationNode in locationNodes {
-                let sceneLocation = simd_float3(sceneNode!.position)
-                let dirVec = simd_float3(locationNode.directionVector!)
-                let raycastQuery = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
-                                    allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
-                let rayResult = self.session.raycast(raycastQuery)
-                if let result = rayResult.first  {
-                    locationNode.continuallyAdjustNodePositionWhenWithinRange = false
-                    locationNode.continuallyUpdatePositionAndScale = false
-                    let pos = result.worldTransform
-                    let node = SCNNode(geometry: SCNBox(width:0.1, height:0.1, length:0.1, chamferRadius: 0))
-                    node.setWorldTransform(SCNMatrix4(pos))
-                    scene.rootNode.addChildNode(node)
-                    locationNode.setWorldTransform(SCNMatrix4(pos))
-                    locationNode.position.x = locationNode.position.x * 100
-                    locationNode.position.y = locationNode.position.y * 100
-                    locationNode.position.z = locationNode.position.z
-                    print(locationNode.worldPosition)
-                    print("Successful raycast plane collision")
-                } else {
-                    locationNode.continuallyAdjustNodePositionWhenWithinRange = true
-                    locationNode.continuallyUpdatePositionAndScale = true
-                }
-                //print(locationNodes.first!.position)
-            }
-        } else {
-            print("Plane raycasting unsupported")
-            // Fallback on earlier versions
-        }
     }
 }

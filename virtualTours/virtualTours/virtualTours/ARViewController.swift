@@ -182,8 +182,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
                     //let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     //let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
-                    let latitude = 35.495449
-                    let longitude = -80.979291
+                    let latitude = 35.495633
+                    let longitude = -80.979511
                     
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String

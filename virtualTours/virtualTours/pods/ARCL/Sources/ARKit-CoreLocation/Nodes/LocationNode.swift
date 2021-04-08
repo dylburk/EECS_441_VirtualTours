@@ -154,7 +154,7 @@ open class LocationNode: SCNNode {
         }
         
         if #available(iOS 11.0, *) {
-            self.directionVector = self.position
+            self.directionVector = self.worldPosition
         } else {
             // Fallback on earlier versions
         }
