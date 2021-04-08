@@ -74,7 +74,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.sceneTrackingDelegate = nil
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
+        //newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -226,7 +226,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            return
+            //return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
@@ -238,14 +238,43 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             laNode.tag = landmark.id
             laNode.annotationNode.tag = landmark.id
             self.setNode(laNode)
-            let billboardConstraint = SCNBillboardConstraint()
-            billboardConstraint.freeAxes = SCNBillboardAxis.Y
-            laNode.constraints = [billboardConstraint]
-        
-            // add node to AR scene
-            self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            
+            let nodeWorldPosition = laNode.position
+            //let nodePositionOnScreen = self.arView.projectPoint(nodeWorldPosition)
+            
+            //let hitPoint: CGPoint = CGPoint(x: Double(nodePositionOnScreen.x), y: Double(nodePositionOnScreen.y))
+            
+            let hitPoint: CGPoint = CGPoint(x: 100, y: 100)
+            
+            
+            //let hit = self.arView.hitTest(hitPoint, types: .existingPlaneUsingGeometry)
+            
+            
+            let query = self.arView.raycastQuery(from: hitPoint, allowing: ARRaycastQuery.Target.existingPlaneInfinite, alignment: ARRaycastQuery.TargetAlignment.vertical)
+            
+            if let result = self.arView.session.raycast(query!).first {
+                //self.locationManager.stopUpdatingLocation()
+                print("hit")
+                laNode.position = SCNVector3(result.worldTransform.columns.3.x,
+                                             result.worldTransform.columns.3.y,
+                                             result.worldTransform.columns.3.z)
+                laNode.eulerAngles = SCNVector3(laNode.eulerAngles.x + (Float.pi / 2), laNode.eulerAngles.y, laNode.eulerAngles.z)
+                laNode.transform = SCNMatrix4(result.worldTransform)
+            
+                self.arView.scene.rootNode.addChildNode(laNode)
+            }
+            else{
+                let billboardConstraint = SCNBillboardConstraint()
+                billboardConstraint.freeAxes = SCNBillboardAxis.Y
+                laNode.constraints = [billboardConstraint]
+            
+                // add node to AR scene
+                self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            }
         }
     }
+    
+    
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
         //print("Annotation Tap")
@@ -262,6 +291,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("Location Tap")
         //print(node.tag!)
     }
+    
+
 
 }
 extension UIFont {

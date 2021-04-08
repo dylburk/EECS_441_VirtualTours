@@ -274,7 +274,7 @@ public extension SceneLocationView {
         }
 
         locationNodes.append(locationNode)
-        print(locationNode.position)
+        //print(locationNode.position)
         sceneNode?.addChildNode(locationNode)
     }
 

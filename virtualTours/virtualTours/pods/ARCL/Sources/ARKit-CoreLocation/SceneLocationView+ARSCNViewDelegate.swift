@@ -18,29 +18,29 @@ import RealityKit
 extension SceneLocationView: ARSCNViewDelegate {
 
     public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-        print("PLANE")
-        
-        let width = CGFloat(planeAnchor.extent.x)
-        let height = CGFloat(planeAnchor.extent.z)
-        let plane = SCNPlane(width: width, height: height)
-        
-        plane.materials.first?.diffuse.contents = UIColor.red
-        
-        let planeNode = SCNNode(geometry: plane)
-        
-        let x = CGFloat(planeAnchor.center.x)
-        let y = CGFloat(planeAnchor.center.y)
-        let z = CGFloat(planeAnchor.center.z)
-        planeNode.position = SCNVector3(x,y,z)
-        planeNode.eulerAngles.x = -.pi / 2
-        
-        node.addChildNode(planeNode)
+//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//        print("PLANE")
+//
+//        let width = CGFloat(planeAnchor.extent.x)
+//        let height = CGFloat(planeAnchor.extent.z)
+//        let plane = SCNPlane(width: width, height: height)
+//
+//        plane.materials.first?.diffuse.contents = UIColor.red
+//
+//        let planeNode = SCNNode(geometry: plane)
+//
+//        let x = CGFloat(planeAnchor.center.x)
+//        let y = CGFloat(planeAnchor.center.y)
+//        let z = CGFloat(planeAnchor.center.z)
+//        planeNode.position = SCNVector3(x,y,z)
+//        planeNode.eulerAngles.x = -.pi / 2
+//
+//        node.addChildNode(planeNode)
         arViewDelegate?.renderer?(renderer, didAdd: node, for: anchor)
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        //guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         arViewDelegate?.renderer?(renderer, willUpdate: node, for: anchor)
     }
 
