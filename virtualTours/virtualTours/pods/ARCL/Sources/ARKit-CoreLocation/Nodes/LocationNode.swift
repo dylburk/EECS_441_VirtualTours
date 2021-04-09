@@ -164,7 +164,7 @@ open class LocationNode: SCNNode {
 
     /// See `LocationAnnotationNode`'s override of this function. Because it doesn't invoke `super`'s version, any changes
     /// made in this file must be repeated in `LocationAnnotationNode`.
-    func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?, locationNodeLocation nodeLocation: CLLocation,
+    public func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?, locationNodeLocation nodeLocation: CLLocation,
                                 locationManager: SceneLocationManager, onCompletion: (() -> Void)) {
         guard let position = scenePosition, locationManager.currentLocation != nil else {
             return

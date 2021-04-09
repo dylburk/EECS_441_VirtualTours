@@ -21,6 +21,9 @@ import MapKit
 /// shadowed by `ARSCNViewDelegate` and invoked on the `SceneLocationView`'s `arDelegate`. If you need to receive
 /// any of these callbacks, implement them on your `arDelegate`.
 open class SceneLocationView: ARSCNView {
+    // Used to track anchor nodes for plane allocation
+    public var anchorMap = [UUID:SCNNode]()
+    
     /// The limit to the scene, in terms of what data is considered reasonably accurate.
     /// Measured in meters.
     static let sceneLimit = 100.0
@@ -307,6 +310,11 @@ public extension SceneLocationView {
         guard let childNodes = sceneNode?.childNodes else { return }
         for node in childNodes {
             node.removeFromParentNode()
+        }
+        for element in anchorMap {
+            for node in element.value.childNodes {
+                node.removeFromParentNode()
+            }
         }
     }
 

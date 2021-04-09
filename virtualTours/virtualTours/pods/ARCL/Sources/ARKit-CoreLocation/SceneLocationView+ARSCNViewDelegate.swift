@@ -10,7 +10,6 @@ import Foundation
 import ARKit
 import CoreLocation
 import MapKit
-import RealityKit
 
 // MARK: - ARSCNViewDelegate
 
@@ -18,24 +17,23 @@ import RealityKit
 extension SceneLocationView: ARSCNViewDelegate {
 
     public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-//        print("PLANE")
-//
-//        let width = CGFloat(planeAnchor.extent.x)
-//        let height = CGFloat(planeAnchor.extent.z)
-//        let plane = SCNPlane(width: width, height: height)
-//
-//        plane.materials.first?.diffuse.contents = UIColor.red
-//
-//        let planeNode = SCNNode(geometry: plane)
-//
-//        let x = CGFloat(planeAnchor.center.x)
-//        let y = CGFloat(planeAnchor.center.y)
-//        let z = CGFloat(planeAnchor.center.z)
-//        planeNode.position = SCNVector3(x,y,z)
-//        planeNode.eulerAngles.x = -.pi / 2
-//
-//        node.addChildNode(planeNode)
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+    
+        print("PLANE")
+        
+        /*let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let plane = SCNPlane(width: width, height: height)
+        plane.materials.first?.diffuse.contents = UIColor.red
+        let planeNode = SCNNode(geometry: plane)
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+        planeNode.position = SCNVector3(x,y,z)
+        planeNode.eulerAngles.x = -.pi / 2
+        node.addChildNode(planeNode)*/
+        
+        anchorMap[anchor.identifier] = node
         arViewDelegate?.renderer?(renderer, didAdd: node, for: anchor)
     }
 
@@ -148,7 +146,7 @@ extension SceneLocationView {
 
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         arViewDelegate?.renderer?(renderer, updateAtTime: time)
-        
+        /*
         if #available(iOS 13.0, *) {
             for locationNode in locationNodes {
                 let sceneLocation = simd_float3(renderer.pointOfView!.worldPosition)
@@ -186,7 +184,7 @@ extension SceneLocationView {
         } else {
             print("Plane raycasting unsupported")
             // Fallback on earlier versions
-        }
+        }*/
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {

@@ -75,7 +75,7 @@ open class LocationAnnotationNode: LocationNode {
     /// Note: we repeat code from `LocationNode`'s implementation of this function. Is this because of the use of `SCNTransaction`
     /// to wrap the changes? It's legal to nest the calls, should consider this if any more changes to
     /// `LocationNode`'s implementation are needed.
-    override func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?,
+    public override func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?,
                                          locationNodeLocation nodeLocation: CLLocation,
                                          locationManager: SceneLocationManager,
                                          onCompletion: (() -> Void)) {
