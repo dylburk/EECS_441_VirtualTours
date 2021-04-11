@@ -32,7 +32,7 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30"/>
                                 </state>
                                 <connections>
-                                    <segue destination="V7o-He-BNv" kind="presentation" modalPresentationStyle="fullScreen" id="Qds-L4-Dtd"/>
+                                    <action selector="sidepanel:" destination="eOR-xL-kn7" eventType="touchUpInside" id="x2d-Bc-b1h"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoVector" translatesAutoresizingMaskIntoConstraints="NO" id="U3q-EG-2O5">
@@ -64,7 +64,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dCo-IP-WUS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="131.8840579710145" y="132.58928571428572"/>
+            <point key="canvasLocation" x="1042.0289855072465" y="132.58928571428572"/>
         </scene>
         <!--Landmark Info-->
         <scene sceneID="oi3-0G-INV">
@@ -201,12 +201,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Azo-3w-KJE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1069.5652173913045" y="132.58928571428572"/>
+            <point key="canvasLocation" x="1979.7101449275365" y="132.58928571428572"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="8Ml-xk-Wzb">
             <objects>
-                <viewController storyboardIdentifier="SettingsViewController" id="dAK-cz-kcl" userLabel="Settings View Controller" customClass="SettingsViewController" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="dAK-cz-kcl" userLabel="Settings View Controller" customClass="SettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4dg-TP-E4i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
