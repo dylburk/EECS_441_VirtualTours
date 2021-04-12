@@ -89,8 +89,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 if let mapsVC = storyBoard.instantiateViewController(withIdentifier: "MapsVC") as? MapsVC {
                     
                     self.updateLandmarks()
-                    print("Landmarks before map view: ")
-                    print(self.landmarks!)
                     mapsVC.landmarks = self.landmarks
                     // self.navigationController!.pushViewController(mapsVC, animated: true)
                     self.present(mapsVC, animated: true, completion: nil)
@@ -232,12 +230,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
+                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    let latitude = 35.495540
-                    let longitude = -80.979380
+                    //let latitude = 35.495540
+                    //let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
@@ -248,7 +246,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     print(landmark)
                     self.landmarks.append(landmark)
-                    break
                 }
                 //print("LANDMARKS:")
                 print(self.landmarks!)

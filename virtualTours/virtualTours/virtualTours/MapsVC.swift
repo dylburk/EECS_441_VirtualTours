@@ -38,14 +38,13 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
         
         print("Map View landmarks: ")
         print(self.landmarks!)
-        
+        /*
         let latitude = 42.33740720
         let longitude = -83.49006790
         let title = "Great Wall Restaurant"
-        let id = "ChIJw0Yrh21TO4gRPHZszjvclzs"
+        let id = "ChIJ8XChotasJIgR8yZrValrMyc"
         // let latitude = 35.495540
         // let longitude = -80.979380
-        //let title = "Gamer Zone"
         let types = ["restaurant",
                      "food",
                      "point_of_interest",
@@ -56,9 +55,8 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
                            title: title,
                            id: id,
                            types: types)
-        // print(landmark)
         landmarks?.append(landmark)
-        
+        */
         
         for landmark in landmarks! {
             landmarkMarker = GMSMarker(position: CLLocationCoordinate2D(latitude: landmark.latitude, longitude: landmark.longitude))
@@ -75,7 +73,7 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
         locmanager.stopUpdatingLocation()
         
         // Zoom in to the user's current location
-        mMap.camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 6.0)
+        mMap.camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 17.5)
     }
     
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
@@ -91,16 +89,15 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
                     print("ERROR")
                 }
                 semaphore.signal()
-                print("ADDRESS: " + info!.address)
                 DispatchQueue.main.async {
                     infoView.backgroundColor = UIColor.white
                     infoView.layer.cornerRadius = 6
                     
                     
-                    let nameLabel = UILabel(frame: CGRect.init(x: 10, y: 10, width: infoView.frame.size.width - 16, height: 15))
+                    let nameLabel = UILabel(frame: CGRect.init(x: 10, y: 10, width: infoView.frame.size.width - 16, height: 18))
                         //UILabel(frame: CGRect.init(x: timestamp.frame.origin.x, y: timestamp.frame.origin.y + timestamp.frame.size.height + 5, width: view.frame.size.width - 16, height: 15))
-                    nameLabel.text = landmark.title
-                    nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+                    nameLabel.text = info?.name
+                    nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
                     nameLabel.textColor = .black
                     infoView.addSubview(nameLabel)
                     
@@ -134,9 +131,13 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
                     ratingLabel.textColor = .black
                     infoView.addSubview(ratingLabel)
                     
-                    let openLabel = UILabel(frame: CGRect.init(x: nameLabel.frame.origin.x + 150, y: addressLabel.frame.origin.y + addressLabel.frame.size.height + 5, width: infoView.frame.size.width - 20, height: 20))
+                    let openLabel = UILabel(frame: CGRect.init(x: nameLabel.frame.origin.x + 125, y: addressLabel.frame.origin.y + addressLabel.frame.size.height + 5, width: infoView.frame.size.width - 20, height: 20))
+                    
+                    
+                    let hoursString = info!.hours
                     
                     let openString = info!.open ? "Open Now" : "Closed Now"
+                    print(info!.open)
                     openLabel.font = UIFont.systemFont(ofSize: 16)
                     // let openString = "Open Now"
                     if (openString == "Open Now"){
@@ -144,16 +145,21 @@ final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDeleg
                     } else {
                         openLabel.textColor = .red
                     }
-                    openLabel.text = openString
+                    if (hoursString == "No hours available"){
+                        openLabel.text = hoursString
+                    } else {
+                        openLabel.text = openString
+                    }
+                    
                     infoView.addSubview(openLabel)
                     
                     let landmarkLocation = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
                     let distanceInMeters = (self.mMap.myLocation?.distance(from: landmarkLocation))!
-                    let distanceInMiles = (distanceInMeters/1609.344)
+                    //let distanceInMiles = (distanceInMeters/1609.344)
                     //print("Distance: " + distanceText)
 
                     let distanceLabel = UILabel(frame: CGRect.init(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 100, width: infoView.frame.size.width - 16, height: 15))
-                    distanceLabel.text = String(format: "Distance: %.01f mi", distanceInMiles)
+                    distanceLabel.text = String(format: "Distance: %.01f m", distanceInMeters)
                     distanceLabel.font = UIFont.systemFont(ofSize: 16)
                     
                     distanceLabel.lineBreakMode = NSLineBreakMode.byWordWrapping

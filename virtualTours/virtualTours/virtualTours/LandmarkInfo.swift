@@ -18,4 +18,5 @@ struct LandmarkInfo {
     let phone : String
     let map : String
     let open : Bool
+    let hours : String
 }

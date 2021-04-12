@@ -57,7 +57,12 @@ class LIViewController: UIViewController {
                 self.typeLabel.text = "NULL"
             }
             self.addressLabel.text = "Address: " + info.address
-            
+            /*var openString = info.open
+             if (openString == "No hours available"){
+                
+            } else {
+                openString = info.open ? "Open" : "Closed"
+            }*/
             let openString = info.open ? "Open" : "Closed"
             let hoursString = NSMutableAttributedString(string: "Hours: " + openString,
                                                         attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),

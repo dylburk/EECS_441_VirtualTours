@@ -61,15 +61,17 @@ class LandmarkInfoLoader{
                         let map = result.object(forKey: "map") as! String
                         let phone = result.object(forKey: "phone") as! String
                         
-                        guard let hours = result.object(forKey: "hours") as? NSDictionary  else {
-                            handler(nil, NSError())
-                            return
+                        var noHours: String = ""
+                        var open: Bool = false
+                        if let hours = result.object(forKey: "hours") as? NSDictionary {
+                                open = hours.object(forKey: "open_now") as! Bool
+                        } else {
+                            noHours = (result.object(forKey: "hours") as? String)!
+                            // handler(nil, NSError())
                         }
                         
-                        let open = hours.object(forKey: "open_now") as! Bool
-                        
                         let landmarkInfo = LandmarkInfo(id: id, name: name, types: types, description: description,
-                                                        address: address, website: website, rating: rating, phone: phone, map: map, open: open)
+                                                        address: address, website: website, rating: rating, phone: phone, map: map, open: open, hours: noHours)
                         
                         LandmarkInfoLoader.cache[id] = landmarkInfo
                         print("handler called")
