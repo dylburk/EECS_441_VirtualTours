@@ -60,7 +60,27 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         arView = SceneLocationView()
         view.addSubview(arView)
+        
+        // add swipe (left) gesture recorgnizer
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(startMap(_:)))
+        swipeRecognizer.direction = .left
+        self.view.addGestureRecognizer(swipeRecognizer)
+
     }
+    
+    @objc func startMap(_ sender: UISwipeGestureRecognizer) {
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            if let mapsVC = storyBoard.instantiateViewController(withIdentifier: "MapsVC") as? MapsVC {
+                
+                self.updateLandmarks()
+                print("Landmarks before map view: ")
+                print(self.landmarks!)
+                mapsVC.landmarks = self.landmarks
+                // self.navigationController!.pushViewController(mapsVC, animated: true)
+                self.present(mapsVC, animated: true, completion: nil)
+            }
+        }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -184,17 +204,18 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
+                // print("Dictionary:")
                 print(dict)
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
 
-                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
+                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    let latitude = 35.495540
-                    let longitude = -80.979380
+                    // let latitude = 35.495540
+                    // let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
@@ -203,11 +224,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id,
                                        types: types)
-                    print(landmark)
+                    // print(landmark)
                     self.landmarks.append(landmark)
-                    break
+                    // break
                 }
-                //print("LANDMARKS:")
+                // print("LANDMARKS:")
                 print(self.landmarks!)
                 handler(nil)
             }
@@ -343,3 +364,5 @@ extension AnnotationNode {
         }
     }
 }
+
+

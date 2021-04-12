@@ -273,6 +273,52 @@
             </objects>
             <point key="canvasLocation" x="1069.5652173913045" y="912.72321428571422"/>
         </scene>
+        <!--MapsVC-->
+        <scene sceneID="7Yi-dE-jwX">
+            <objects>
+                <viewController storyboardIdentifier="MapsVC" id="DD1-Fx-JPy" customClass="MapsVC" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ujw-52-YDZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kan-p2-ytB" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="86" width="414" height="810"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38W-PS-VeC">
+                                <rect key="frame" x="0.0" y="42" width="414" height="44"/>
+                                <items>
+                                    <navigationItem title="Map View" id="9E3-hv-CDT">
+                                        <barButtonItem key="leftBarButtonItem" image="chevron.backward" catalog="system" id="9Ll-eb-YAN">
+                                            <color key="tintColor" systemColor="labelColor"/>
+                                            <connections>
+                                                <action selector="backTapped:" destination="DD1-Fx-JPy" id="fWS-6y-7pJ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="q0A-CY-Pua"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="38W-PS-VeC" firstAttribute="leading" secondItem="q0A-CY-Pua" secondAttribute="leading" id="2iu-9Z-3By"/>
+                            <constraint firstItem="q0A-CY-Pua" firstAttribute="top" secondItem="38W-PS-VeC" secondAttribute="top" constant="2" id="Cta-fi-e0S"/>
+                            <constraint firstItem="kan-p2-ytB" firstAttribute="leading" secondItem="q0A-CY-Pua" secondAttribute="leading" id="Jcx-LY-J5q"/>
+                            <constraint firstItem="q0A-CY-Pua" firstAttribute="trailing" secondItem="kan-p2-ytB" secondAttribute="trailing" id="P1y-yl-b4z"/>
+                            <constraint firstItem="q0A-CY-Pua" firstAttribute="trailing" secondItem="38W-PS-VeC" secondAttribute="trailing" id="Uhn-6J-6UL"/>
+                            <constraint firstItem="kan-p2-ytB" firstAttribute="top" secondItem="38W-PS-VeC" secondAttribute="bottom" id="aL9-7y-h3b"/>
+                            <constraint firstItem="kan-p2-ytB" firstAttribute="bottom" secondItem="q0A-CY-Pua" secondAttribute="bottom" constant="34" id="vYb-up-nOT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mMap" destination="kan-p2-ytB" id="G3N-5j-399"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BpR-qL-O1h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-784.05797101449286" y="912.72321428571422"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="6Ym-LG-ALh">
             <objects>
