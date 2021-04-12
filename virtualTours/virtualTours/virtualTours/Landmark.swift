@@ -14,4 +14,5 @@ struct Landmark {
     let longitude: CLLocationDegrees
     let title: String
     let id: String
+    let types: [Any]
 }
