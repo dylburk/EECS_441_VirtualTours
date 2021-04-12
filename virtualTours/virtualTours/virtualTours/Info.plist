@@ -31,10 +31,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Get notifications of new nearby landmarks.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Get notifications of new nearby landmarks in background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Get notifications of new nearby landmarks.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
