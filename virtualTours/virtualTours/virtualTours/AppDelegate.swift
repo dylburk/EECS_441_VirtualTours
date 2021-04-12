@@ -13,7 +13,6 @@ import BackgroundTasks //https://www.andyibanez.com/posts/modern-background-task
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -22,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             (task) in self.handleAppRefreshTask(task: task as! BGAppRefreshTask)
         }
             
+            
+        
         return true
         }
 

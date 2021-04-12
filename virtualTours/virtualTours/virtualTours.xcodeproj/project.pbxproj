@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D835E0826223BA2001A623C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0726223BA2001A623C /* TableViewCell.swift */; };
+		1D835E0B26223BDF001A623C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0A26223BDF001A623C /* MenuController.swift */; };
+		1DD5AE072621877700FE3038 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD5AE062621877700FE3038 /* TableViewCell.xib */; };
 		3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */; };
 		3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */; };
 		3CB00B4925F2B51C002BB2A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4725F2B51C002BB2A1 /* Main.storyboard */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D835E0726223BA2001A623C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		1D835E0A26223BDF001A623C /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		1DD5AE062621877700FE3038 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		2D9E03F33378EF6C32C59C5F /* Pods-virtualTours.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.debug.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.debug.xcconfig"; sourceTree = "<group>"; };
 		3CB00B3E25F2B51C002BB2A1 /* virtualTours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = virtualTours.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +106,9 @@
 				78E22474260AB3CA009E8992 /* LIViewController.swift */,
 				78E8DEA9260C17CE0059E321 /* LandmarkInfoLoader.swift */,
 				78E2A6E02611756300136414 /* LandmarkInfo.swift */,
+				1DD5AE062621877700FE3038 /* TableViewCell.xib */,
+				1D835E0726223BA2001A623C /* TableViewCell.swift */,
+				1D835E0A26223BDF001A623C /* MenuController.swift */,
 			);
 			path = virtualTours;
 			sourceTree = "<group>";
@@ -174,6 +183,7 @@
 			files = (
 				3CB00B4E25F2B51D002BB2A1 /* LaunchScreen.storyboard in Resources */,
 				3CB00B4B25F2B51D002BB2A1 /* Assets.xcassets in Resources */,
+				1DD5AE072621877700FE3038 /* TableViewCell.xib in Resources */,
 				3CB00B4925F2B51C002BB2A1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,8 +258,10 @@
 				78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */,
 				C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */,
 				78E2A6E12611756300136414 /* LandmarkInfo.swift in Sources */,
+				1D835E0B26223BDF001A623C /* MenuController.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,
 				A0613E88260B2ECE00CE526F /* NotificationViewController.swift in Sources */,
+				1D835E0826223BA2001A623C /* TableViewCell.swift in Sources */,
 				78E22475260AB3CA009E8992 /* LIViewController.swift in Sources */,
 				78E8DEAA260C17CE0059E321 /* LandmarkInfoLoader.swift in Sources */,
 				3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */,
@@ -408,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.dylburk.virtualTouringapp2;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualTouringapp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -428,7 +440,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.dylburk.virtualToursingapp2;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualToursingapp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

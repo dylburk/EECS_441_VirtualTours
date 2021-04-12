@@ -5,6 +5,7 @@ struct NearbyStore {
     static let urlSession = URLSession(configuration: .default)
     private let serverUrl = "https://xy62cwh158.execute-api.us-east-2.amazonaws.com/nearbySMS"
     let phoneNumberKey = "phoneNumber"
+    let sendNotifKey = "sendNotif"
     func getNearby(currentLocation: CLLocation,
                    refresh: @escaping () -> (),
                    completion: @escaping () -> ()) {
@@ -13,6 +14,13 @@ struct NearbyStore {
         print(lat)
         var modifiedUrl = serverUrl
         let defaults = UserDefaults.standard
+        
+        let sendNotifs = defaults.bool(forKey: sendNotifKey)
+        if (!sendNotifs) {
+            print("user disabled notifications")
+            return
+        }
+        
         if let phoneNumberValue = defaults.string(forKey: phoneNumberKey) {
             modifiedUrl = serverUrl + "?phone=" + phoneNumberValue
             modifiedUrl = modifiedUrl + "&lat=" + lat + "&long=" + long
@@ -20,6 +28,8 @@ struct NearbyStore {
         } else {
             return
         }
+        
+        
         
         guard let apiUrl = URL(string: modifiedUrl) else {
             print("getChatts: Bad URL")
@@ -31,7 +41,7 @@ struct NearbyStore {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             defer { completion() }
-            guard let data = data, error == nil else {
+            guard let _ = data, error == nil else {
                 print("getChatts: NETWORKING ERROR")
                 return
             }
