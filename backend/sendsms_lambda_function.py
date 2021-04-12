@@ -13,19 +13,14 @@ GOOGLE_API_KEY =  os.environ.get("GOOGLE_API_KEY")
 
 
 def lambda_handler(event, context):
-    #lat = event['lat']
-    #long = event['long']
-    to_number = '+18106234972' #hard-coded for skeletal
+    queryPhone = event['queryStringParameters']['phone']
+    lat = event['queryStringParameters']['lat']
+    long = event['queryStringParameters']['long']
+    to_number = '+1' + queryPhone #hard-coded for skeletal
     from_number = "+18573228013"
-    #location = ("%s,%s" % (lat,long)) #hard-coded for skeletal
-    #google_populated_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius=500&key={}".format(location, GOOGLE_API_KEY)
     locals_list = ''
     # insert Twilio Account SID into the REST API URL
-    #google_post_params = {"location": location, "radius": 5, "key": GOOGLE_API_KEY} 
-
-    # encode the parameters for Python's urllib
-    #data = parse.urlencode(google_post_params).encode() #hard-coded for skeletal
-    req = request.Request("https://po4sn5eftg.execute-api.us-east-2.amazonaws.com/nearby?longitude=-83.740889&latitude=42.279343")
+    req = request.Request("https://po4sn5eftg.execute-api.us-east-2.amazonaws.com/nearby?longitude=%s&latitude=%s" % (str(long), str(lat)))
     try:
         # perform HTTP POST request
         #print(data)
@@ -37,12 +32,33 @@ def lambda_handler(event, context):
         return e
     locals_list = json.loads(locals_list)
     print(locals_list["landmarks"])
-    text_message = "Nearby Landmarks:\n"
+    text_message = "Nearby Landmarks:\n" 
+    found = False
     for element in locals_list["landmarks"]:
-        text_message += element["name"] + "\n"
+        if int(element["rating"]) >= 4.0: //TODO: narrow down nearby to 1 landmark per text
+            text_message += element["name"] + " (%s) - %.1f/5.0\n" % (element["types"][0].replace("_", " "), element["rating"])
+            found = True
+            break
+
+    if found == False:
+        for element in locals_list["landmarks"]:
+        if int(element["rating"]) >= 0.0: //TODO: narrow down nearby to 1 landmark per text
+            text_message += element["name"] + " (%s) - %.1f/5.0\n" % (element["types"][0].replace("_", " "), element["rating"])
+            found = True
+            break
+    
+    if found == False:
+        for element in locals_list["landmarks"]:
+            text_message += element["name"] + " (%s) - No Rating\n" % (element["types"][0].replace("_", " "), element["rating"])
+            found = True
+            break
+    
+    if found == False:
+        return "No Nearby Landmarks"
+    
     print(text_message)
     body = locals_list
-    
+
     print(body)
     if not TWILIO_ACCOUNT_SID:
         return "Unable to access Twilio Account SID."
@@ -67,7 +83,7 @@ def lambda_handler(event, context):
     authentication = "{}:{}".format(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     base64string = base64.b64encode(authentication.encode('utf-8'))
     req.add_header("Authorization", "Basic %s" % base64string.decode('ascii'))
-
+    #commenting out for now to save on twilio funds (sms demo done)
     try:
         # perform HTTP POST request
         with request.urlopen(req, data) as f:
