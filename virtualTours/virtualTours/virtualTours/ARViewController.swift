@@ -180,10 +180,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-                    //let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    //let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
-                    let latitude = 35.495633
-                    let longitude = -80.979511
+                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
+                    //let latitude = 42.195958
+                    //let longitude = -85.713265
                     
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
@@ -197,7 +197,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     //print(landmark)
                     self.landmarks.append(landmark)
-                    break
+                    //break
                 }
                 //print("LANDMARKS:")
                 //print(self.landmarks!)

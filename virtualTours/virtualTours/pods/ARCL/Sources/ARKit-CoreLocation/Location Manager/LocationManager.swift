@@ -43,8 +43,8 @@ public class LocationManager: NSObject {
 
         self.locationManager = CLLocationManager()
         self.locationManager!.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        self.locationManager!.distanceFilter = 5
-        self.locationManager!.headingFilter = 5
+        self.locationManager!.distanceFilter = kCLDistanceFilterNone
+        self.locationManager!.headingFilter = kCLHeadingFilterNone
         self.locationManager!.pausesLocationUpdatesAutomatically = false
         self.locationManager!.delegate = self
         self.locationManager!.startUpdatingHeading()
