@@ -8,4 +8,5 @@ target 'virtualTours' do
   pod 'GoogleMaps'
   pod 'ARCL'
   pod 'GooglePlaces'
+  pod 'SideMenu'
 end

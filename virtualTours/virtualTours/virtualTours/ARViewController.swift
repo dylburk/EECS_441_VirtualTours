@@ -12,9 +12,13 @@ import SceneKit
 import MapKit
 import ARCL
 import CoreLocation
+import SideMenu
 
 
-class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDelegate, LNTouchDelegate {
+class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDelegate, LNTouchDelegate, MenuControllerDelegate {
+    
+    
+    private var sideMenu: SideMenuNavigationController?
 
     @IBOutlet weak var contentView: UIView!
     
@@ -49,6 +53,18 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let menu = MenuController(with: ["Home", "Timeline", "Map", "Settings"])
+        menu.delegate = self
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        
+        sideMenu?.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
+        //sideMenu?.presentationStyle.backgroundColor = UIColor.red
+        sideMenu?.menuWidth = 200
+        
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
@@ -59,10 +75,34 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         arView = SceneLocationView()
         view.addSubview(arView)
     }
+    func didSelectMenuItem(named: String) {
+        sideMenu?.dismiss(animated: true, completion: {
+            if named == "Home" {
+                print("I am in the Home section")
+            }
+            else if named == "Timeline" {
+                print(" I am in the Timeline section")
+            }
+            else if named == "Map" {
+                print(" I am in the Map section")
+            }
+            else if named == "Settings" {
+                print(" I am in the Settings section")
+            }
+        })
+    }
+    @IBAction func sidepanel(_ sender: Any) {
+        present(sideMenu!, animated: true)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        sideMenu?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    func getNearbySMS(currentLocation: CLLocation) {
+        let store = NearbyStore()
+        store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
     }
     
     func refactorScene(){
@@ -109,6 +149,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
                 arView.removeAllNodes()
+                self.getNearbySMS(currentLocation: locations.last!)
                 self.updateLandmarks()
             }
             else if (lastLocation.distance(from: locations.last!) > locationUpdateFilter) {
@@ -120,6 +161,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
         }
     }
+    
+
+
+    
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
