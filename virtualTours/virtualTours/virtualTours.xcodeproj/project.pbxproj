@@ -10,6 +10,7 @@
 		1D835E0826223BA2001A623C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0726223BA2001A623C /* TableViewCell.swift */; };
 		1D835E0B26223BDF001A623C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0A26223BDF001A623C /* MenuController.swift */; };
 		1DD5AE072621877700FE3038 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD5AE062621877700FE3038 /* TableViewCell.xib */; };
+		3756B51326244C5B006AC01C /* MapsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3756B51226244C5B006AC01C /* MapsVC.swift */; };
 		3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */; };
 		3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */; };
 		3CB00B4925F2B51C002BB2A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CB00B4725F2B51C002BB2A1 /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 		1D835E0A26223BDF001A623C /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		1DD5AE062621877700FE3038 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		2D9E03F33378EF6C32C59C5F /* Pods-virtualTours.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.debug.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.debug.xcconfig"; sourceTree = "<group>"; };
+		3756B51226244C5B006AC01C /* MapsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsVC.swift; sourceTree = "<group>"; };
 		3CB00B3E25F2B51C002BB2A1 /* virtualTours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = virtualTours.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3CB00B4325F2B51C002BB2A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				1DD5AE062621877700FE3038 /* TableViewCell.xib */,
 				1D835E0726223BA2001A623C /* TableViewCell.swift */,
 				1D835E0A26223BDF001A623C /* MenuController.swift */,
+				3756B51226244C5B006AC01C /* MapsVC.swift */,
 			);
 			path = virtualTours;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				78E8DEAA260C17CE0059E321 /* LandmarkInfoLoader.swift in Sources */,
 				3CB00B4425F2B51C002BB2A1 /* SceneDelegate.swift in Sources */,
 				787969D825F58C7900BDEFFD /* ARViewController.swift in Sources */,
+				3756B51326244C5B006AC01C /* MapsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,13 +418,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = G85435TRS8;
+				DEVELOPMENT_TEAM = 9U6347S47E;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualTouringapp2;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.ramagyar.virtualTouringapp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -434,13 +438,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = G85435TRS8;
+				DEVELOPMENT_TEAM = 9U6347S47E;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualToursingapp2;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.ramagyarvirtualToursingapp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -85,6 +85,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             }
             else if named == "Map" {
                 print(" I am in the Map section")
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                if let mapsVC = storyBoard.instantiateViewController(withIdentifier: "MapsVC") as? MapsVC {
+                    
+                    self.updateLandmarks()
+                    print("Landmarks before map view: ")
+                    print(self.landmarks!)
+                    mapsVC.landmarks = self.landmarks
+                    // self.navigationController!.pushViewController(mapsVC, animated: true)
+                    self.present(mapsVC, animated: true, completion: nil)
+                }
             }
             else if named == "Settings" {
                 print(" I am in the Settings section")

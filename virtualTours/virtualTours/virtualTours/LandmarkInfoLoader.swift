@@ -8,7 +8,8 @@
 import CoreLocation
 import Foundation
 
-class LandmarkInfoLoader {
+
+class LandmarkInfoLoader{
     
     static var cache = [String:LandmarkInfo]()
     
@@ -35,6 +36,7 @@ class LandmarkInfoLoader {
                 print(error)
             } else if let httpResponse = response as? HTTPURLResponse {
                 print(data!)
+                print(httpResponse.statusCode)
                 if httpResponse.statusCode == 200 {
                     do {
                         let responseObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)
@@ -70,10 +72,11 @@ class LandmarkInfoLoader {
                                                         address: address, website: website, rating: rating, phone: phone, map: map, open: open)
                         
                         LandmarkInfoLoader.cache[id] = landmarkInfo
-                        
+                        print("handler called")
                         handler(landmarkInfo, nil)
 
                     } catch let error as NSError {
+                        print("error called")
                         handler(nil, error)
                     }
                 }
@@ -82,7 +85,7 @@ class LandmarkInfoLoader {
 
         dataTask.resume()
     }
-
+    
 }
     
     
