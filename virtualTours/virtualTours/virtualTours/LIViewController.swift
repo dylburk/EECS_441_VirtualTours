@@ -8,6 +8,17 @@
 import Foundation
 import UIKit
 
+func formatTypeString(types: [String]) -> String {
+    if types.isEmpty {
+        return "NULL"
+    }
+    
+    var type = types[0]
+    
+    type = type.replacingOccurrences(of: "_", with: " ")
+    return type.capitalized
+}
+
 class LIViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -50,19 +61,20 @@ class LIViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.titleLabel.text = info.name
-            self.descLabel.text = "Temp Sample Text"
-            if !info.types.isEmpty {
-                self.typeLabel.text = info.types[0]
-            } else {
-                self.typeLabel.text = "NULL"
-            }
+            self.descLabel.text = info.description
+            self.typeLabel.text = formatTypeString(types: info.types)
             self.addressLabel.text = "Address: " + info.address
             
             let openString = info.open ? "Open" : "Closed"
             let hoursString = NSMutableAttributedString(string: "Hours: " + openString,
                                                         attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
                                                                      NSAttributedString.Key.foregroundColor: UIColor.black])
-            hoursString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemGreen, range: NSRange(location:7,length:4))
+            if info.open {
+                hoursString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemGreen, range: NSRange(location:7,length:4))
+            } else {
+                hoursString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemRed, range: NSRange(location:7,length:6))
+            }
+            
             self.hoursLabel.attributedText = hoursString
             
             self.ratingLabel.text = "Rating: " + String(info.rating)
