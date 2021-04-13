@@ -246,6 +246,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
                     let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
+                    
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
                     let types = item.object(forKey: "types") as! [Any]
@@ -257,6 +258,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     //print(landmark)
                     self.landmarks.append(landmark)
+                    break
                 }
                 //print("LANDMARKS:")
                 //print(self.landmarks!)
