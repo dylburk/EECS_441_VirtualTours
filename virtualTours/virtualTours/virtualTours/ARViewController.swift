@@ -271,7 +271,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            return
+            //return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
