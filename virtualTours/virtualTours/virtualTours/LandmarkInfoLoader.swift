@@ -60,6 +60,8 @@ class LandmarkInfoLoader{
                         let rating = result.object(forKey: "rating") as! Double
                         let map = result.object(forKey: "map") as! String
                         let phone = result.object(forKey: "phone") as! String
+                        let latitude = result.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                        let longitude = result.value(forKeyPath: "location.lng") as! CLLocationDegrees
                         
                         var noHours: String = ""
                         var open: Bool = false
@@ -70,7 +72,7 @@ class LandmarkInfoLoader{
                             // handler(nil, NSError())
                         }
                         
-                        let landmarkInfo = LandmarkInfo(id: id, name: name, types: types, description: description,
+                        let landmarkInfo = LandmarkInfo(id: id, latitude: latitude, longitude: longitude, name: name, types: types, description: description,
                                                         address: address, website: website, rating: rating, phone: phone, map: map, open: open, hours: noHours)
                         
                         LandmarkInfoLoader.cache[id] = landmarkInfo

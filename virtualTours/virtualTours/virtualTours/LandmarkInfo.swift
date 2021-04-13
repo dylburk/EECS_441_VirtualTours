@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct LandmarkInfo {
     let id: String
+    let latitude : CLLocationDegrees
+    let longitude : CLLocationDegrees
     let name: String
     let types : [String]
     let description : String
