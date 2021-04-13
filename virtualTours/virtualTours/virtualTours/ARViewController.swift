@@ -106,12 +106,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         super.viewWillAppear(animated)
         sideMenu?.setNavigationBarHidden(true, animated: animated)
     }
-    
-    func getNearbySMS(currentLocation: CLLocation) {
-        let store = NearbyStore()
-        store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
-    }
-    
+
     func refactorScene(){
         arView?.removeFromSuperview()
         let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
@@ -232,12 +227,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-                   /* let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
-                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees*/
+                    let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
+                    let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    let latitude = 35.495540
-                    let longitude = -80.979380
+//                    let latitude = 35.495540
+//                    let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
