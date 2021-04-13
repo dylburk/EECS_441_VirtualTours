@@ -230,7 +230,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-
                     let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
@@ -313,8 +312,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             
             let sceneLocation = simd_float3(self.arView.pointOfView!.worldPosition)
             let dirVec = simd_float3(nodeWorldPosition)
-            print(sceneLocation)
-            print(dirVec)
+            //print(sceneLocation)
+            //print(dirVec)
             let query = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
                                 allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
             
