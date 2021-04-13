@@ -39,7 +39,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let northMultiplier = 95000.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
-    public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
+    public var arTrackingType = SceneLocationView.ARTrackingType.worldTracking
     public var scalingScheme = ScalingScheme.normal
     public var continuallyAdjustNodePositionWhenWithinRange = true
     public var continuallyUpdatePositionAndScale = true
@@ -113,9 +113,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.translatesAutoresizingMaskIntoConstraints = false
         newARView.arViewDelegate = self
         newARView.locationNodeTouchDelegate = self
+        newARView.sceneTrackingDelegate = nil
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        newARView.debugOptions = [.showWorldOrigin]
+        //newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -143,9 +144,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //print("locationManager refreshed")
         if locations.count > 0 {
             //print("locationManager refreshed")
-            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
+            if (lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
                 arView.removeAllNodes()
@@ -181,6 +183,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func updateLandmarks() {
         guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
+            print("NEW THREAD")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
                 //print("getting landmarks")
@@ -222,17 +225,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
-                print(dict)
+                //print(dict)
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
+
 
                     let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-//                    let latitude = 35.495540
-//                    let longitude = -80.979380
                     //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
@@ -241,24 +243,21 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id,
                                        types: types)
-                    print(landmark)
+                    //print(landmark)
                     self.landmarks.append(landmark)
                     break
                 }
                 //print("LANDMARKS:")
-                print(self.landmarks!)
+                //print(self.landmarks!)
                 handler(nil)
             }
         }
     }
     
     func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
-        
-        
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
         let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) * (northMultiplier)
         let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * (eastMultiplier)
-        
         
         
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
@@ -275,7 +274,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            return
+            //return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
@@ -287,14 +286,78 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             laNode.tag = landmark.id
             laNode.annotationNode.tag = landmark.id
             self.setNode(laNode)
-            let billboardConstraint = SCNBillboardConstraint()
-            billboardConstraint.freeAxes = SCNBillboardAxis.Y
-            laNode.constraints = [billboardConstraint]
-        
-            // add node to AR scene
-            self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            
+            //let nodePositionOnScreen = self.arView.projectPoint(nodeWorldPosition)
+            
+            //let hitPoint: CGPoint = CGPoint(x: Double(nodePositionOnScreen.x), y: Double(nodePositionOnScreen.y))
+            
+            //let hitPoint: CGPoint = CGPoint(x: 100, y: 100)
+            
+            
+            //let hit = self.arView.hitTest(hitPoint, types: .existingPlaneUsingGeometry)
+            
+            
+            /*let query = self.arView.raycastQuery(from: hitPoint, allowing: ARRaycastQuery.Target.existingPlaneInfinite, alignment: ARRaycastQuery.TargetAlignment.vertical)*/
+            
+            let laTmp = LocationNode(location: location)
+            
+            let locationNodeLocation = self.arView.locationOfLocationNode(laTmp)
+
+            laTmp.updatePositionAndScale(setup: true,
+                                          scenePosition: self.arView.currentScenePosition, locationNodeLocation: locationNodeLocation,
+                                          locationManager: self.arView.sceneLocationManager) {
+                
+            }
+            
+            let nodeWorldPosition = laTmp.worldPosition
+            
+            let sceneLocation = simd_float3(self.arView.pointOfView!.worldPosition)
+            let dirVec = simd_float3(nodeWorldPosition)
+            print(sceneLocation)
+            print(dirVec)
+            let query = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
+                                allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
+            
+            if let result = self.arView.session.raycast(query).first {
+                guard let planeAnchor = result.anchor as! ARPlaneAnchor? else {
+                    print("ERROR: Not plane anchor")
+                    return
+                }
+                print("hit")
+                //self.locationManager.stopUpdatingLocation()
+                /*laNode.position = SCNVector3(result.worldTransform.columns.3.x,
+                                             result.worldTransform.columns.3.y,
+                                             result.worldTransform.columns.3.z)
+                laNode.eulerAngles = SCNVector3(laNode.eulerAngles.x + (Float.pi / 2), laNode.eulerAngles.y, laNode.eulerAngles.z)
+                laNode.setWorldTransform(SCNMatrix4(result.worldTransform))*/
+                
+                laNode.annotationNode.scale = SCNVector3(0.2, 0.2, 0.2) // Need to scale based on distance?
+                let x = CGFloat(planeAnchor.center.x)
+                let y = CGFloat(planeAnchor.center.y)
+                let z = CGFloat(planeAnchor.center.z)
+                laNode.position = SCNVector3(x, y, z)
+                laNode.eulerAngles.x = -.pi / 2
+                laNode.constraints = []
+                
+                
+            
+                //self.arView.scene.rootNode.addChildNode(laNode)
+                //let node = SCNNode(geometry: SCNBox(width:0.01, height:0.01, length:0.01, chamferRadius: 0))
+                //self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(node)
+                self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(laNode)
+                
+            } else {
+                let billboardConstraint = SCNBillboardConstraint()
+                billboardConstraint.freeAxes = SCNBillboardAxis.Y
+                laNode.constraints = [billboardConstraint]
+            
+                // add node to AR scene
+                self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            }
         }
     }
+    
+    
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
         //print("Annotation Tap")
@@ -311,6 +374,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("Location Tap")
         //print(node.tag!)
     }
+    
+
 
 }
 extension UIFont {
