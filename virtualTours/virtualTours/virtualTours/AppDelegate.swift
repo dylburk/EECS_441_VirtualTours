@@ -7,6 +7,7 @@
 
 import UIKit
 import GooglePlaces
+import GoogleMaps
 import BackgroundTasks //https://www.andyibanez.com/posts/modern-background-tasks-ios13/
 
 @main
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         GMSPlacesClient.provideAPIKey("AIzaSyBteIWUNfzha84rBc5w7FKKnkt46wF1tbg")
+        GMSServices.provideAPIKey("AIzaSyBteIWUNfzha84rBc5w7FKKnkt46wF1tbg")
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "edu.umich.nkeller97.fetchNearby", using: nil){ //TODO: sync with nearby in-app
             (task) in self.handleAppRefreshTask(task: task as! BGAppRefreshTask)
         }

@@ -290,6 +290,52 @@
             </objects>
             <point key="canvasLocation" x="132" y="914"/>
         </scene>
+        <!--MapsVC-->
+        <scene sceneID="4Mv-UG-MuL">
+            <objects>
+                <viewController storyboardIdentifier="MapsVC" id="fvT-WG-bgc" customClass="MapsVC" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QUs-SF-8jE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EBZ-mo-Fh8" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="86" width="414" height="810"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DUE-Mf-Lka">
+                                <rect key="frame" x="0.0" y="42" width="414" height="44"/>
+                                <items>
+                                    <navigationItem title="Map View" id="14t-ex-4k0">
+                                        <barButtonItem key="leftBarButtonItem" image="chevron.backward" catalog="system" id="nYN-Xh-0wP">
+                                            <color key="tintColor" systemColor="labelColor"/>
+                                            <connections>
+                                                <action selector="backTapped:" destination="fvT-WG-bgc" id="Rvt-wc-KRs"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9EQ-3j-g0Q"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="EBZ-mo-Fh8" firstAttribute="bottom" secondItem="9EQ-3j-g0Q" secondAttribute="bottom" constant="34" id="4xY-t6-vdI"/>
+                            <constraint firstItem="9EQ-3j-g0Q" firstAttribute="trailing" secondItem="DUE-Mf-Lka" secondAttribute="trailing" id="CfW-t1-9tL"/>
+                            <constraint firstItem="9EQ-3j-g0Q" firstAttribute="trailing" secondItem="EBZ-mo-Fh8" secondAttribute="trailing" id="Hew-Bp-C43"/>
+                            <constraint firstItem="EBZ-mo-Fh8" firstAttribute="leading" secondItem="9EQ-3j-g0Q" secondAttribute="leading" id="TuF-R6-jIh"/>
+                            <constraint firstItem="9EQ-3j-g0Q" firstAttribute="top" secondItem="DUE-Mf-Lka" secondAttribute="top" constant="2" id="UgP-BE-DD8"/>
+                            <constraint firstItem="EBZ-mo-Fh8" firstAttribute="top" secondItem="DUE-Mf-Lka" secondAttribute="bottom" id="Ui1-Wf-1WV"/>
+                            <constraint firstItem="DUE-Mf-Lka" firstAttribute="leading" secondItem="9EQ-3j-g0Q" secondAttribute="leading" id="nhR-Su-aTh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mMap" destination="EBZ-mo-Fh8" id="eh0-LP-cAF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qfM-gv-Chz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-768" y="913"/>
+        </scene>
     </scenes>
     <resources>
         <image name="LogoVector" width="1000" height="1000"/>
