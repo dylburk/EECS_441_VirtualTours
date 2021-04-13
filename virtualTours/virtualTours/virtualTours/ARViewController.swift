@@ -27,6 +27,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
+    //let locationUpdateFilterSMS = 100.0
+    
+    let updateDeltaMeters = 10.0
     let locationUpdateFilter = 5.0
     let landmarkUpdateFilter = 30.0
     
@@ -67,9 +70,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+
+        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.showsBackgroundLocationIndicator = true
+        locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-        locationManager.requestWhenInUseAuthorization()
-        
+
         landmarks = []
         
         arView = SceneLocationView()
@@ -159,10 +166,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
         }
     }
-    
 
-
-    
+    func getNearbySMS(currentLocation: CLLocation) {
+        DispatchQueue.main.async {
+            let store = NearbyStore()
+            store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
+        }
+    }
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
