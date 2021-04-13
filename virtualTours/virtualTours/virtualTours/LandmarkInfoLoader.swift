@@ -54,7 +54,7 @@ class LandmarkInfoLoader{
                         
                         let name = result.object(forKey: "name") as! String
                         let types = result.object(forKey: "types") as! [String]
-                        let description = "This is a description"
+                        let description = result.object(forKey: "desc") as! String
                         let address = result.object(forKey: "address") as! String
                         let website = result.object(forKey: "website") as! String
                         let rating = result.object(forKey: "rating") as! Double

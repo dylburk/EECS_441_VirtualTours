@@ -27,6 +27,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
+    //let locationUpdateFilterSMS = 100.0
+    
+    let updateDeltaMeters = 10.0
     let locationUpdateFilter = 5.0
     let landmarkUpdateFilter = 30.0
     
@@ -36,7 +39,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let northMultiplier = 95000.0
     
     public var locationEstimateMethod = LocationEstimateMethod.mostRelevantEstimate
-    public var arTrackingType = SceneLocationView.ARTrackingType.orientationTracking
+    public var arTrackingType = SceneLocationView.ARTrackingType.worldTracking
     public var scalingScheme = ScalingScheme.normal
     public var continuallyAdjustNodePositionWhenWithinRange = true
     public var continuallyUpdatePositionAndScale = true
@@ -67,9 +70,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+
+        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.showsBackgroundLocationIndicator = true
+        locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-        locationManager.requestWhenInUseAuthorization()
-        
+
         landmarks = []
         
         arView = SceneLocationView()
@@ -107,21 +114,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         super.viewWillAppear(animated)
         sideMenu?.setNavigationBarHidden(true, animated: animated)
     }
-    
-    func getNearbySMS(currentLocation: CLLocation) {
-        let store = NearbyStore()
-        store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
-    }
-    
+
     func refactorScene(){
         arView?.removeFromSuperview()
         let newARView = SceneLocationView.init(trackingType: arTrackingType, frame: contentView.frame, options: nil)
         newARView.translatesAutoresizingMaskIntoConstraints = false
         newARView.arViewDelegate = self
         newARView.locationNodeTouchDelegate = self
+        newARView.sceneTrackingDelegate = nil
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        newARView.debugOptions = [.showWorldOrigin]
+        //newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -149,9 +152,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //print("locationManager refreshed")
         if locations.count > 0 {
             //print("locationManager refreshed")
-            if(lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
+            if (lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
                 arView.removeAllNodes()
@@ -167,10 +171,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
         }
     }
-    
 
-
-    
+    func getNearbySMS(currentLocation: CLLocation) {
+        DispatchQueue.main.async {
+            let store = NearbyStore()
+            store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
+        }
+    }
     
     func setNode(_ node: LocationNode) {
         if let annoNode = node as? LocationAnnotationNode {
@@ -184,6 +191,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     func updateLandmarks() {
         guard let currentLocation = arView?.sceneLocationManager.currentLocation else {
+            print("NEW THREAD")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
                 //print("getting landmarks")
@@ -225,7 +233,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
-                print(dict)
+                //print(dict)
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
@@ -234,9 +242,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    //let latitude = 35.495540
-                    //let longitude = -80.979380
-                    //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
                     let landmark = Landmark(latitude: latitude,
@@ -244,23 +249,20 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        title: title,
                                        id: id,
                                        types: types)
-                    print(landmark)
+                    //print(landmark)
                     self.landmarks.append(landmark)
                 }
                 //print("LANDMARKS:")
-                print(self.landmarks!)
+                //print(self.landmarks!)
                 handler(nil)
             }
         }
     }
     
     func addLandmarkToARScene(currentLocation: CLLocation, landmark: Landmark){
-        
-        
         //let location = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
         let northOffset = (landmark.latitude - currentLocation.coordinate.latitude) * (northMultiplier)
         let eastOffset = (landmark.longitude - currentLocation.coordinate.longitude) * (eastMultiplier)
-        
         
         
         let location = currentLocation.translatedLocation(with: LocationTranslation(latitudeTranslation: Double(northOffset), longitudeTranslation: Double(eastOffset), altitudeTranslation: 0))
@@ -277,7 +279,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            return
+            //return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
@@ -289,14 +291,57 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             laNode.tag = landmark.id
             laNode.annotationNode.tag = landmark.id
             self.setNode(laNode)
-            let billboardConstraint = SCNBillboardConstraint()
-            billboardConstraint.freeAxes = SCNBillboardAxis.Y
-            laNode.constraints = [billboardConstraint]
-        
-            // add node to AR scene
-            self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            
+            
+            let laTmp = LocationNode(location: location)
+            
+            let locationNodeLocation = self.arView.locationOfLocationNode(laTmp)
+
+            laTmp.updatePositionAndScale(setup: true,
+                                          scenePosition: self.arView.currentScenePosition, locationNodeLocation: locationNodeLocation,
+                                          locationManager: self.arView.sceneLocationManager) {
+                
+            }
+            
+            let nodeWorldPosition = laTmp.worldPosition
+            
+            let sceneLocation = simd_float3(self.arView.pointOfView!.worldPosition)
+            let dirVec = simd_float3(nodeWorldPosition)
+            let query = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
+                                allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
+            
+            if let result = self.arView.session.raycast(query).first {
+                guard let planeAnchor = result.anchor as! ARPlaneAnchor? else {
+                    print("ERROR: Not plane anchor")
+                    return
+                }
+                print("hit")
+                
+                laNode.annotationNode.scale = SCNVector3(0.2, 0.2, 0.2) // Need to scale based on distance?
+                let x = CGFloat(planeAnchor.center.x)
+                let y = CGFloat(planeAnchor.center.y)
+                let z = CGFloat(planeAnchor.center.z)
+                laNode.position = SCNVector3(x, y, z)
+                laNode.eulerAngles.x = -.pi / 2
+                laNode.constraints = []
+                
+                
+            
+                
+                self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(laNode)
+                
+            } else {
+                let billboardConstraint = SCNBillboardConstraint()
+                billboardConstraint.freeAxes = SCNBillboardAxis.Y
+                laNode.constraints = [billboardConstraint]
+            
+                // add node to AR scene
+                self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
+            }
         }
     }
+    
+    
     @objc func annotationNodeTouched(node: AnnotationNode) {
         // Need to abstract the functionality of this to a seperate class
         //print("Annotation Tap")
@@ -313,6 +358,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         //print("Location Tap")
         //print(node.tag!)
     }
+    
+
 
 }
 extension UIFont {
