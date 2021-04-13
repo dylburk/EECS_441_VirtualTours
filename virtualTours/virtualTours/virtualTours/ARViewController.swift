@@ -325,7 +325,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 }
                 print("hit")
                 
-                laNode.annotationNode.scale = SCNVector3(0.2, 0.2, 0.2) // Need to scale based on distance?
+                laNode.annotationNode.scale = SCNVector3(0.3, 0.3, 0.3) // Need to scale based on distance?
                 let x = CGFloat(planeAnchor.center.x)
                 let y = CGFloat(planeAnchor.center.y)
                 let z = CGFloat(planeAnchor.center.z)
