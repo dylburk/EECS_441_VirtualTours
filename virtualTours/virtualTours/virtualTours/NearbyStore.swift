@@ -32,7 +32,7 @@ struct NearbyStore {
         
         
         guard let apiUrl = URL(string: modifiedUrl) else {
-            print("getChatts: Bad URL")
+            print("nearbySMS: Bad URL")
             return
         }
         
@@ -46,7 +46,7 @@ struct NearbyStore {
                 return
             }
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                print("getChatts: HTTP STATUS: \(httpStatus.statusCode)")
+                print("nearbySMS: HTTP STATUS: \(httpStatus.statusCode)")
                 return
             }
             
