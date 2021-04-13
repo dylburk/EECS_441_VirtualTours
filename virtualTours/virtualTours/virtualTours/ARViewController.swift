@@ -230,7 +230,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 self.landmarks = []
                 for item in result {
 
-
                     let latitude = item.value(forKeyPath: "location.lat") as! CLLocationDegrees
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
