@@ -235,7 +235,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     let longitude = item.value(forKeyPath: "location.lng") as! CLLocationDegrees
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
-                    //let title = "Gamer Zone"
                     let types = item.object(forKey: "types") as! [Any]
 
                     let landmark = Landmark(latitude: latitude,
@@ -245,7 +244,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     //print(landmark)
                     self.landmarks.append(landmark)
-                    break
                 }
                 //print("LANDMARKS:")
                 //print(self.landmarks!)
@@ -274,7 +272,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            //return
+            return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
@@ -287,17 +285,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             laNode.annotationNode.tag = landmark.id
             self.setNode(laNode)
             
-            //let nodePositionOnScreen = self.arView.projectPoint(nodeWorldPosition)
-            
-            //let hitPoint: CGPoint = CGPoint(x: Double(nodePositionOnScreen.x), y: Double(nodePositionOnScreen.y))
-            
-            //let hitPoint: CGPoint = CGPoint(x: 100, y: 100)
-            
-            
-            //let hit = self.arView.hitTest(hitPoint, types: .existingPlaneUsingGeometry)
-            
-            
-            /*let query = self.arView.raycastQuery(from: hitPoint, allowing: ARRaycastQuery.Target.existingPlaneInfinite, alignment: ARRaycastQuery.TargetAlignment.vertical)*/
             
             let laTmp = LocationNode(location: location)
             
@@ -313,8 +300,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             
             let sceneLocation = simd_float3(self.arView.pointOfView!.worldPosition)
             let dirVec = simd_float3(nodeWorldPosition)
-            print(sceneLocation)
-            print(dirVec)
             let query = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
                                 allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
             
@@ -324,12 +309,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     return
                 }
                 print("hit")
-                //self.locationManager.stopUpdatingLocation()
-                /*laNode.position = SCNVector3(result.worldTransform.columns.3.x,
-                                             result.worldTransform.columns.3.y,
-                                             result.worldTransform.columns.3.z)
-                laNode.eulerAngles = SCNVector3(laNode.eulerAngles.x + (Float.pi / 2), laNode.eulerAngles.y, laNode.eulerAngles.z)
-                laNode.setWorldTransform(SCNMatrix4(result.worldTransform))*/
                 
                 laNode.annotationNode.scale = SCNVector3(0.2, 0.2, 0.2) // Need to scale based on distance?
                 let x = CGFloat(planeAnchor.center.x)
@@ -341,9 +320,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 
                 
             
-                //self.arView.scene.rootNode.addChildNode(laNode)
-                //let node = SCNNode(geometry: SCNBox(width:0.01, height:0.01, length:0.01, chamferRadius: 0))
-                //self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(node)
+                
                 self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(laNode)
                 
             } else {
