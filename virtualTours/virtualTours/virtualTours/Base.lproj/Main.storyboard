@@ -206,7 +206,7 @@
         <!--Settings View Controller-->
         <scene sceneID="8Ml-xk-Wzb">
             <objects>
-                <viewController storyboardIdentifier="SettingsViewController" id="dAK-cz-kcl" userLabel="Settings View Controller" customClass="SettingsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="dAK-cz-kcl" userLabel="Settings View Controller" customClass="SettingsViewController" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4dg-TP-E4i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
