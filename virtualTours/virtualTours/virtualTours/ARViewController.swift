@@ -30,7 +30,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     //let locationUpdateFilterSMS = 100.0
     
     let updateDeltaMeters = 10.0
-    let locationUpdateFilter = 5.0
+    let locationUpdateFilter = 0.0
+    let planeDetectFilter = 15.0
     let landmarkUpdateFilter = 30.0
     
     let arRadius = 30.0
@@ -94,7 +95,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 print(" I am in the Map section")
                 let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                 if let mapsVC = storyBoard.instantiateViewController(withIdentifier: "MapsVC") as? MapsVC {
-                    
+
                     self.updateLandmarks()
                     mapsVC.landmarks = self.landmarks
                     // self.navigationController!.pushViewController(mapsVC, animated: true)
@@ -103,6 +104,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             }
             else if named == "Settings" {
                 print(" I am in the Settings section")
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                if let settingVC = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController") as? SettingsViewController {
+                    
+                    // self.navigationController!.pushViewController(mapsVC, animated: true)
+                    self.present(settingVC, animated: true, completion: nil)
+                
+                }
             }
         })
     }
@@ -173,10 +181,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
 
     func getNearbySMS(currentLocation: CLLocation) {
-        DispatchQueue.main.async {
             let store = NearbyStore()
             store.getNearby(currentLocation: currentLocation, refresh: {}, completion: {})
-        }
     }
     
     func setNode(_ node: LocationNode) {
@@ -279,7 +285,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let distance = currentLocation.distance(from: location)
         if(distance > arRadius){
             print("Too far to \(landmark.title): (\(distance)m")
-            //return
+            return
         }
         print("Close enough to \(landmark.title): (\(distance)m")
         
@@ -329,8 +335,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             
                 
                 self.arView.anchorMap[planeAnchor.identifier]?.addChildNode(laNode)
+                return
                 
-            } else {
+            } else{
                 let billboardConstraint = SCNBillboardConstraint()
                 billboardConstraint.freeAxes = SCNBillboardAxis.Y
                 laNode.constraints = [billboardConstraint]
@@ -338,6 +345,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 // add node to AR scene
                 self.arView.addLocationNodeWithConfirmedLocation(locationNode: laNode)
             }
+        
         }
     }
     

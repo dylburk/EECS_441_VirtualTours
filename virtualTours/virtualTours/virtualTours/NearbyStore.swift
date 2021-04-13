@@ -11,7 +11,6 @@ struct NearbyStore {
                    completion: @escaping () -> ()) {
         let lat = String(format: "%.6f", currentLocation.coordinate.latitude)
         let long = String(format: "%.6f", currentLocation.coordinate.longitude)
-        print(lat)
         var modifiedUrl = serverUrl
         let defaults = UserDefaults.standard
         
@@ -41,13 +40,17 @@ struct NearbyStore {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             defer { completion() }
-            guard let _ = data, error == nil else {
-                print("getChatts: NETWORKING ERROR")
-                return
-            }
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                print("nearbySMS: HTTP STATUS: \(httpStatus.statusCode)")
-                return
+            if let error = error {
+                print(error)
+            } else if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    print(data!)
+                    return
+                }
+                else{
+                    print("nearbySMS: HTTP STATUS: \(httpResponse.statusCode)")
+                    return
+                }
             }
             
             

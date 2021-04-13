@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import GoogleMaps
 
-final class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     @IBOutlet weak var mMap: GMSMapView!
     var landmarks: [Landmark]? = nil
     private lazy var locmanager = CLLocationManager()

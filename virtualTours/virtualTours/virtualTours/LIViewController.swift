@@ -36,6 +36,8 @@ class LIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//       
+        
         if id != "" {
             landmarkInfoLoader.loadLandmark(id: id) { info, error in
                 self.populateView(landmarkInfo: info, error: error)
@@ -82,7 +84,9 @@ class LIViewController: UIViewController {
             
             self.hoursLabel.attributedText = hoursString
             
-            self.ratingLabel.text = "Rating: " + String(info.rating)
+            let ratingString = (info.rating == -1) ? "No Rating" : String(info.rating)
+            
+            self.ratingLabel.text = "Rating: " + ratingString
             self.websiteLabel.text = "Website: " + info.website
         }
     }
