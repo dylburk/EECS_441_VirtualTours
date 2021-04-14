@@ -30,11 +30,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     //let locationUpdateFilterSMS = 100.0
     
     let updateDeltaMeters = 10.0
-    let locationUpdateFilter = 0.0
-    let planeDetectFilter = 15.0
+    let locationUpdateFilter = 3.0
+    let planeDetectFilter = 30.0
     let landmarkUpdateFilter = 30.0
     
-    let arRadius = 30.0
+    let arRadius = 45.0
     
     let eastMultiplier = 75000.0
     let northMultiplier = 95000.0
@@ -46,7 +46,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     public var continuallyUpdatePositionAndScale = true
     public var annotationHeightAdjustmentFactor = 1.0
     public var colorIndex = 0
-    public var supported_types = ["cafe", "establishment", "restaurant", "school", "bank"]
+    public var supported_types = ["cafe", "restaurant", "school", "bank"]
     
     var landmarks : [Landmark]! = []
     
@@ -258,7 +258,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                                        types: types)
                     //print(landmark)
                     self.landmarks.append(landmark)
-                    break
                 }
                 //print("LANDMARKS:")
                 //print(self.landmarks!)
@@ -277,7 +276,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         let name = landmark.title
         let color = colors[colorIndex % colors.count]
         var type = String()
-        type = "point_of_interest"
+        type = "establishment"
         for (_, supported_type) in landmark.types.enumerated() {
             if (self.supported_types.contains(supported_type as! String)) {
                 type = supported_type as! String
@@ -325,7 +324,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 }
                 print("hit")
                 
-                laNode.annotationNode.scale = SCNVector3(0.3, 0.3, 0.3) // Need to scale based on distance?
+                laNode.annotationNode.scale = SCNVector3(0.5, 0.5, 0.5) // Need to scale based on distance?
                 let x = CGFloat(planeAnchor.center.x)
                 let y = CGFloat(planeAnchor.center.y)
                 let z = CGFloat(planeAnchor.center.z)
