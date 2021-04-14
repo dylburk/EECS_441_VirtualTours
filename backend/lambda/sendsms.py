@@ -25,37 +25,24 @@ def lambda_handler(event, context):
         # perform HTTP POST request
         #print(data)
         with request.urlopen(req) as f:
-            
+
             locals_list = str(f.read().decode('utf-8'))
     except Exception as e:
         # something went wrong!
         return e
     locals_list = json.loads(locals_list)
     print(locals_list["landmarks"])
-    text_message = "Nearby Landmarks:\n" 
+    text_message = "Nearby Landmarks:\n"
     found = False
     for element in locals_list["landmarks"]:
-        if int(element["rating"]) >= 4.0: //TODO: narrow down nearby to 1 landmark per text
+        if int(element["rating"]) >= 4.0: # TODO: narrow down nearby to 1 landmark per text
             text_message += element["name"] + " (%s) - %.1f/5.0\n" % (element["types"][0].replace("_", " "), element["rating"])
             found = True
             break
 
     if found == False:
-        for element in locals_list["landmarks"]:
-        if int(element["rating"]) >= 0.0: //TODO: narrow down nearby to 1 landmark per text
-            text_message += element["name"] + " (%s) - %.1f/5.0\n" % (element["types"][0].replace("_", " "), element["rating"])
-            found = True
-            break
-    
-    if found == False:
-        for element in locals_list["landmarks"]:
-            text_message += element["name"] + " (%s) - No Rating\n" % (element["types"][0].replace("_", " "), element["rating"])
-            found = True
-            break
-    
-    if found == False:
         return "No Nearby Landmarks"
-    
+
     print(text_message)
     body = locals_list
 
