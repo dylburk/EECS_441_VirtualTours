@@ -34,7 +34,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     let planeDetectFilter = 30.0
     let landmarkUpdateFilter = 30.0
     
-    let arRadius = 45.0
+    let arRadius = 20.0
     
     let eastMultiplier = 75000.0
     let northMultiplier = 95000.0
@@ -90,6 +90,13 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             }
             else if named == "Timeline" {
                 print(" I am in the Timeline section")
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                if let tlVC = storyBoard.instantiateViewController(withIdentifier: "TimelineVC") as? TimelineVC {
+
+                    self.updateLandmarks()
+                    tlVC.landmarks = self.landmarks
+                    self.present(tlVC, animated: true, completion: nil)
+                }
             }
             else if named == "Map" {
                 print(" I am in the Map section")

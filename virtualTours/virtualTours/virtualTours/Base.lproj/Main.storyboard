@@ -303,6 +303,55 @@
             </objects>
             <point key="canvasLocation" x="1069.5652173913045" y="912.72321428571422"/>
         </scene>
+        <!--TimelineVC-->
+        <scene sceneID="xAe-BX-JAh">
+            <objects>
+                <viewController storyboardIdentifier="TimelineVC" modalPresentationStyle="fullScreen" id="7Pg-P1-llQ" customClass="TimelineVC" customModule="virtualTours" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PUG-az-D4R">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J2L-14-5cr">
+                                <rect key="frame" x="0.0" y="44" width="414" height="803"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7IJ-RL-bHH">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <color key="barTintColor" systemColor="systemBackgroundColor"/>
+                                <items>
+                                    <navigationItem title="Timeline" id="dDY-gv-fM3">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.backward" catalog="system" id="4NE-pJ-Pce">
+                                            <color key="tintColor" systemColor="labelColor"/>
+                                            <connections>
+                                                <action selector="backTapped:" destination="7Pg-P1-llQ" id="mOX-Fw-BgY"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yDu-9D-aaI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7IJ-RL-bHH" firstAttribute="leading" secondItem="yDu-9D-aaI" secondAttribute="leading" id="3FD-du-a1S"/>
+                            <constraint firstItem="yDu-9D-aaI" firstAttribute="trailing" secondItem="J2L-14-5cr" secondAttribute="trailing" id="CAg-Hx-IOu"/>
+                            <constraint firstItem="J2L-14-5cr" firstAttribute="top" secondItem="7IJ-RL-bHH" secondAttribute="top" id="SHL-0K-ICc"/>
+                            <constraint firstItem="yDu-9D-aaI" firstAttribute="top" secondItem="7IJ-RL-bHH" secondAttribute="top" id="ZAE-Cb-Rq2"/>
+                            <constraint firstItem="J2L-14-5cr" firstAttribute="bottom" secondItem="yDu-9D-aaI" secondAttribute="bottom" constant="34" id="iPC-SC-EnR"/>
+                            <constraint firstItem="J2L-14-5cr" firstAttribute="leading" secondItem="yDu-9D-aaI" secondAttribute="leading" id="izV-41-7dG"/>
+                            <constraint firstItem="yDu-9D-aaI" firstAttribute="trailing" secondItem="7IJ-RL-bHH" secondAttribute="trailing" id="jpc-jw-4Y1"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="J2L-14-5cr" id="ptc-RX-qEc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zcd-ce-2lZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1980" y="913"/>
+        </scene>
         <!--MapsVC-->
         <scene sceneID="4Mv-UG-MuL">
             <objects>
@@ -348,7 +397,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qfM-gv-Chz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-768" y="913"/>
+            <point key="canvasLocation" x="91" y="913"/>
         </scene>
     </scenes>
     <resources>
