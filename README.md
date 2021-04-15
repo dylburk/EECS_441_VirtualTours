@@ -9,6 +9,6 @@
 
 [grade_sheet]: https://docs.google.com/spreadsheets/d/1_Low1PHhZUEALd02MWC2aj6mFIOk2o4dWY378RGkbV0/edit?usp=sharing
 [team_contract]: /assets/contract.pdf
-[demo_page]: https://youtube.com/
+[demo_page]: https://youtu.be/wBqHov4LNHg
 [wiki_page]: https://github.com/dylburk/EECS_441_VirtualTours/wiki
 [process_page]: https://trello.com/b/tJXrMfjk/virtualtours
