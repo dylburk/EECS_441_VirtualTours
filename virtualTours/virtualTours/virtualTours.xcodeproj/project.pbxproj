@@ -25,6 +25,7 @@
 		C745383525FBF5D900D8399A /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = C745383425FBF5D900D8399A /* Landmark.swift */; };
 		C774F23D262601A4002CC3B7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C774F23C262601A4002CC3B7 /* SettingsViewController.swift */; };
 		C774F24A26260E8C002CC3B7 /* MapsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C774F24926260E8C002CC3B7 /* MapsVC.swift */; };
+		C774F2512628B6D2002CC3B7 /* TimelineVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C774F2502628B6D1002CC3B7 /* TimelineVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		C745383425FBF5D900D8399A /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
 		C774F23C262601A4002CC3B7 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C774F24926260E8C002CC3B7 /* MapsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsVC.swift; sourceTree = "<group>"; };
+		C774F2502628B6D1002CC3B7 /* TimelineVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineVC.swift; sourceTree = "<group>"; };
 		E3B8E541C48522E47CD20851 /* Pods-virtualTours.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.debug.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.debug.xcconfig"; sourceTree = "<group>"; };
 		E719BEA4E75FAC9F655D27A7 /* Pods-virtualTours.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtualTours.release.xcconfig"; path = "Target Support Files/Pods-virtualTours/Pods-virtualTours.release.xcconfig"; sourceTree = "<group>"; };
 		EDA6654E961FC34EDA0647E9 /* Pods_virtualTours.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_virtualTours.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 				1DD5AE062621877700FE3038 /* TableViewCell.xib */,
 				1D835E0726223BA2001A623C /* TableViewCell.swift */,
 				1D835E0A26223BDF001A623C /* MenuController.swift */,
+				C774F2502628B6D1002CC3B7 /* TimelineVC.swift */,
 			);
 			path = virtualTours;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				1D835E0B26223BDF001A623C /* MenuController.swift in Sources */,
 				3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */,
 				1D835E0826223BA2001A623C /* TableViewCell.swift in Sources */,
+				C774F2512628B6D2002CC3B7 /* TimelineVC.swift in Sources */,
 				78E22475260AB3CA009E8992 /* LIViewController.swift in Sources */,
 				78E8DEAA260C17CE0059E321 /* LandmarkInfoLoader.swift in Sources */,
 				C774F23D262601A4002CC3B7 /* SettingsViewController.swift in Sources */,
