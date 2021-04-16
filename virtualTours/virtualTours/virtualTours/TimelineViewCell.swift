@@ -10,8 +10,11 @@ import UIKit
 
 class TimelineViewCell: UITableViewCell {
     
- 
- 
+    @IBOutlet weak var nrating: UILabel!
+    
+    @IBOutlet weak var srating: UILabel!
+    @IBOutlet weak var address: UILabel!
+    
     @IBOutlet weak var twords: UILabel!
     
     override func awakeFromNib() {

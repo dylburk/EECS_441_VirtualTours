@@ -14,11 +14,29 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as! TimelineViewCell
         cell.backgroundColor = .white
-        //print(landmarks![indexPath.row].address)
-        cell.twords?.text = landmarks![indexPath.row].title
-        cell.twords?.textColor = .black
+        let id = landmarks![indexPath.row].id
         
- 
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        landmarkInfoLoader.loadLandmark(id: id) { info, error in
+            if (error != nil){
+                print("ERROR")
+            }
+            semaphore.signal()
+            DispatchQueue.main.async {
+                cell.twords?.text = info!.name
+                cell.twords?.textColor = .black
+                cell.twords?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+                cell.address?.text = info!.address
+                cell.address?.textColor = .black
+                cell.srating?.text = "Rating:"
+                cell.srating?.textColor = .black
+                cell.nrating?.text = String(info!.rating)
+                cell.nrating?.textColor = .black
+                print(info!)
+            }
+        }
+        semaphore.wait()
         return cell
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,7 +68,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
         
         /*
         for landmark in landmarks! {
-            // add row to table view
         }*/
             
     }

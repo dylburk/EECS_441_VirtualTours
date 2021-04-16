@@ -257,6 +257,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
                     let types = item.object(forKey: "types") as! [Any]
+                    //let address = item.object(forKey: "address") as! String
 
                     let landmark = Landmark(latitude: latitude,
                                        longitude: longitude,
