@@ -43,14 +43,46 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hours:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K77-YL-luI">
+                        <rect key="frame" x="165" y="76" width="53" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hoursinfo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PSI-1q-RsW">
+                        <rect key="frame" x="226" y="76" width="196" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Website:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Se1-8E-PYw">
+                        <rect key="frame" x="5" y="39" width="67" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bgy-0S-SLo">
+                        <rect key="frame" x="80" y="39" width="365" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <accessibility key="accessibilityConfiguration" identifier="TimelineViewCell"/>
             <connections>
+                <outlet property="Hours" destination="K77-YL-luI" id="mgK-Eu-aZA"/>
+                <outlet property="Hoursinfo" destination="PSI-1q-RsW" id="YNO-DD-fNb"/>
                 <outlet property="address" destination="EFk-s4-shc" id="R3w-tK-i8z"/>
                 <outlet property="nrating" destination="Ioa-e9-Dct" id="CaY-UO-IU2"/>
                 <outlet property="srating" destination="deZ-Xt-IqH" id="O10-pF-2tZ"/>
                 <outlet property="twords" destination="1oQ-Ay-rGV" id="xxt-44-XN4"/>
+                <outlet property="website" destination="Se1-8E-PYw" id="Thv-gg-Qdg"/>
+                <outlet property="websiteinfo" destination="Bgy-0S-SLo" id="VSw-Qg-Rzr"/>
             </connections>
             <point key="canvasLocation" x="-121.73913043478262" y="53.571428571428569"/>
         </tableViewCell>

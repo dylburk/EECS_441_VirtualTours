@@ -29,11 +29,21 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
                 cell.twords?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
                 cell.address?.text = info!.address
                 cell.address?.textColor = .black
+                //
                 cell.srating?.text = "Rating:"
                 cell.srating?.textColor = .black
                 cell.nrating?.text = String(info!.rating)
                 cell.nrating?.textColor = .black
-                print(info!)
+                //
+                cell.Hours?.text = "Hours:"
+                cell.Hours?.textColor = .red
+                cell.Hoursinfo?.text = info!.hours
+                cell.Hoursinfo?.textColor = .red
+                //
+                cell.website?.text = "Website:"
+                cell.website?.textColor = .blue
+                cell.websiteinfo?.text = info!.website
+                cell.websiteinfo?.textColor = .blue
             }
         }
         semaphore.wait()
@@ -43,8 +53,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
         return landmarks!.count
     }
 
-    
-    
     @IBOutlet weak var tableView: UITableView!
     
     var landmarks: [Landmark]? = nil
@@ -55,7 +63,6 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(self.landmarks!)
         tableView.backgroundColor = UIColor.white
         tableView.rowHeight = 150.0
         tableView.delegate = self
@@ -65,11 +72,7 @@ class TimelineVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
         tableView.tableHeaderView = header
         tableView.tableFooterView = UIView()
         tableView.register(UINib(nibName: "TimelineViewCell", bundle: nil), forCellReuseIdentifier: "TimelineViewCell")
-        
-        /*
-        for landmark in landmarks! {
-        }*/
-            
+    
     }
     
     @IBAction func backTapped(_ sender: Any) {

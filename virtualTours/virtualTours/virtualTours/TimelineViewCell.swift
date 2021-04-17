@@ -10,6 +10,18 @@ import UIKit
 
 class TimelineViewCell: UITableViewCell {
     
+    
+    
+    
+    @IBOutlet weak var websiteinfo: UILabel!
+    
+    
+    @IBOutlet weak var website: UILabel!
+    
+    @IBOutlet weak var Hoursinfo: UILabel!
+    
+    @IBOutlet weak var Hours: UILabel!
+    
     @IBOutlet weak var nrating: UILabel!
     
     @IBOutlet weak var srating: UILabel!
