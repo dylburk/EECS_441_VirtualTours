@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1D835E0826223BA2001A623C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0726223BA2001A623C /* TableViewCell.swift */; };
 		1D835E0B26223BDF001A623C /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D835E0A26223BDF001A623C /* MenuController.swift */; };
+		1DC7034C262A230A00449F41 /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7034B262A230A00449F41 /* TimelineViewCell.swift */; };
+		1DC7034F262A23CE00449F41 /* TimelineViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DC7034E262A23CE00449F41 /* TimelineViewCell.xib */; };
 		1DD5AE072621877700FE3038 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD5AE062621877700FE3038 /* TableViewCell.xib */; };
 		251A4161698B728222899167 /* Pods_virtualTours.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA6654E961FC34EDA0647E9 /* Pods_virtualTours.framework */; };
 		3CB00B4225F2B51C002BB2A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */; };
@@ -31,6 +33,8 @@
 /* Begin PBXFileReference section */
 		1D835E0726223BA2001A623C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		1D835E0A26223BDF001A623C /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		1DC7034B262A230A00449F41 /* TimelineViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
+		1DC7034E262A23CE00449F41 /* TimelineViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineViewCell.xib; sourceTree = "<group>"; };
 		1DD5AE062621877700FE3038 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		3CB00B3E25F2B51C002BB2A1 /* virtualTours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = virtualTours.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB00B4125F2B51C002BB2A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 				1D835E0726223BA2001A623C /* TableViewCell.swift */,
 				1D835E0A26223BDF001A623C /* MenuController.swift */,
 				C774F2502628B6D1002CC3B7 /* TimelineVC.swift */,
+				1DC7034B262A230A00449F41 /* TimelineViewCell.swift */,
+				1DC7034E262A23CE00449F41 /* TimelineViewCell.xib */,
 			);
 			path = virtualTours;
 			sourceTree = "<group>";
@@ -190,6 +196,7 @@
 				3CB00B4E25F2B51D002BB2A1 /* LaunchScreen.storyboard in Resources */,
 				3CB00B4B25F2B51D002BB2A1 /* Assets.xcassets in Resources */,
 				1DD5AE072621877700FE3038 /* TableViewCell.xib in Resources */,
+				1DC7034F262A23CE00449F41 /* TimelineViewCell.xib in Resources */,
 				3CB00B4925F2B51C002BB2A1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DC7034C262A230A00449F41 /* TimelineViewCell.swift in Sources */,
 				C745383525FBF5D900D8399A /* Landmark.swift in Sources */,
 				78FF5F4725FF00EA000DD024 /* NearbyStore.swift in Sources */,
 				C745381D25FBDA5500D8399A /* LandmarkLoader.swift in Sources */,
@@ -422,13 +430,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 249RRX8SFV;
+				DEVELOPMENT_TEAM = G85435TRS8;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.vameresh.virtualTouringapp7;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualTouringapp7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -442,13 +450,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 249RRX8SFV;
+				DEVELOPMENT_TEAM = G85435TRS8;
 				INFOPLIST_FILE = virtualTours/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.vameresh.virtualToursingapp2;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.tnikhil.virtualToursingapp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
