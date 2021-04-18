@@ -9,9 +9,14 @@ TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 def lambda_handler(event, context):
-    queryPhone = event['queryStringParameters']['phone']
-    lat = event['queryStringParameters']['lat']
-    long = event['queryStringParameters']['long']
+    try:
+        queryPhone = event['queryStringParameters']['phone']
+        lat = event['queryStringParameters']['lat']
+        long = event['queryStringParameters']['long']
+    except:
+        responseErr = {}
+        responseErr["statusCode"] = 400
+        return responseErr
     to_number = '+1' + queryPhone
     from_number = "+18573228013"
     locals_list = ''
@@ -34,7 +39,7 @@ def lambda_handler(event, context):
             break
     if found == False:
         return "No Nearby Landmarks"
-    body = locals_list
+    body = text_message
     if not TWILIO_ACCOUNT_SID:
         return "Unable to access Twilio Account SID."
     elif not TWILIO_AUTH_TOKEN:
@@ -45,7 +50,6 @@ def lambda_handler(event, context):
         return "The function needs a 'From' number in the format +19732644156"
     elif not body:
         return "The function needs a 'Body' message to send."
-    body = text_message
     # insert Twilio Account SID into the REST API URL
     populated_url = TWILIO_SMS_URL.format(TWILIO_ACCOUNT_SID)
     post_params = {"To": to_number, "From": from_number, "Body": body}
