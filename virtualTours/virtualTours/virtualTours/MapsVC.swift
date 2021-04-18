@@ -36,28 +36,6 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
         // zoom the map to the current location
         locmanager.startUpdatingLocation()
         
-        print("Map View landmarks: ")
-        print(self.landmarks!)
-        /*
-        let latitude = 42.33740720
-        let longitude = -83.49006790
-        let title = "Great Wall Restaurant"
-        let id = "ChIJ8XChotasJIgR8yZrValrMyc"
-        // let latitude = 35.495540
-        // let longitude = -80.979380
-        let types = ["restaurant",
-                     "food",
-                     "point_of_interest",
-                     "establishment"]
-        
-        let landmark = Landmark(latitude: latitude,
-                           longitude: longitude,
-                           title: title,
-                           id: id,
-                           types: types)
-        landmarks?.append(landmark)
-        */
-        
         for landmark in landmarks! {
             landmarkMarker = GMSMarker(position: CLLocationCoordinate2D(latitude: landmark.latitude, longitude: landmark.longitude))
             landmarkMarker.map = mMap
@@ -95,7 +73,7 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
                     
                     
                     let nameLabel = UILabel(frame: CGRect.init(x: 10, y: 10, width: infoView.frame.size.width - 16, height: 18))
-                        //UILabel(frame: CGRect.init(x: timestamp.frame.origin.x, y: timestamp.frame.origin.y + timestamp.frame.size.height + 5, width: view.frame.size.width - 16, height: 15))
+
                     nameLabel.text = info?.name
                     nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
                     nameLabel.textColor = .black
@@ -114,9 +92,6 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
                     addressLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
                     addressLabel.numberOfLines = 2
                     infoView.addSubview(addressLabel)
-                    
-                    // let latitudeText:String = "\(landmark.latitude)"
-                    // let longitudeText:String = "\(landmark.longitude)"
                     
                     let ratingLabel = UILabel(frame: CGRect.init(x: nameLabel.frame.origin.x, y: addressLabel.frame.origin.y + addressLabel.frame.size.height + 5, width: infoView.frame.size.width - 200, height: 20))
                     let ratingNum:String = "\(info!.rating)"
@@ -137,9 +112,9 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
                     let hoursString = info!.hours
                     
                     let openString = info!.open ? "Open Now" : "Closed Now"
-                    print(info!.open)
+
                     openLabel.font = UIFont.systemFont(ofSize: 16)
-                    // let openString = "Open Now"
+
                     if (openString == "Open Now"){
                         openLabel.textColor = .systemGreen
                     } else {
@@ -155,8 +130,6 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
                     
                     let landmarkLocation = CLLocation(latitude: landmark.latitude, longitude: landmark.longitude)
                     let distanceInMeters = (self.mMap.myLocation?.distance(from: landmarkLocation))!
-                    //let distanceInMiles = (distanceInMeters/1609.344)
-                    //print("Distance: " + distanceText)
 
                     let distanceLabel = UILabel(frame: CGRect.init(x: nameLabel.frame.origin.x, y: nameLabel.frame.origin.y + nameLabel.frame.size.height + 100, width: infoView.frame.size.width - 16, height: 15))
                     distanceLabel.text = String(format: "Distance: %.01f m", distanceInMeters)
@@ -166,13 +139,12 @@ class MapsVC: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
                     distanceLabel.numberOfLines = 2
                     
                     distanceLabel.textColor = .black
-                    // distanceLabel.highlight(searchedText: distanceInMiles)
+
                     infoView.addSubview(distanceLabel)
                 }
                 
             }
             
-            //sleep(1)
             semaphore.wait()
             return infoView
         }
