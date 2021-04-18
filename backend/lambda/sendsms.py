@@ -13,7 +13,7 @@ def lambda_handler(event, context):
         queryPhone = event['queryStringParameters']['phone']
         lat = event['queryStringParameters']['lat']
         long = event['queryStringParameters']['long']
-    except Exception:
+    except:
         responseErr = {}
         responseErr["statusCode"] = 400
         return responseErr
