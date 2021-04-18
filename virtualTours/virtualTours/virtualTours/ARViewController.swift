@@ -371,12 +371,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         present(popupVC, animated: true, completion: nil)
     }
     
-    @objc func locationNodeTouched(node: LocationNode) {
-        //print("Location Tap")
-        //print(node.tag!)
-    }
-    
-
 
 }
 extension UIFont {

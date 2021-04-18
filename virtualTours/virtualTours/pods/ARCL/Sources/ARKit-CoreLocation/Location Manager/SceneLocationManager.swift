@@ -101,7 +101,7 @@ public final class SceneLocationManager {
         let currentPoint = CGPoint.pointWithVector(vector: currentScenePosition)
 
         sceneLocationEstimates = sceneLocationEstimates.filter {
-            if #available(iOS 11.3, *) {
+            if #available(iOS 11.0, *) {
                 let radiusContainsPoint = currentPoint.radiusContainsPoint(
                     radius: CGFloat(SceneLocationView.sceneLimit),
                     point: CGPoint.pointWithVector(vector: $0.position))
@@ -122,8 +122,8 @@ public final class SceneLocationManager {
 public extension SceneLocationManager {
     func run() {
         pause()
-		if #available(iOS 11.3, *) {
-            updateEstimatesTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+		if #available(iOS 11.0, *) {
+			updateEstimatesTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
 				self?.updateLocationData()
 			}
 		} else {

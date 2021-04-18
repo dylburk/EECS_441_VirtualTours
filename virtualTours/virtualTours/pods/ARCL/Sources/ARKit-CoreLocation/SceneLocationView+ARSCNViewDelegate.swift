@@ -13,20 +13,18 @@ import MapKit
 
 // MARK: - ARSCNViewDelegate
 
-@available(iOS 11.3, *)
+@available(iOS 11.0, *)
 extension SceneLocationView: ARSCNViewDelegate {
 
+    public func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        return arViewDelegate?.renderer?(renderer, nodeFor: anchor) ?? nil
+    }
+
     public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-    
-        print("PLANE")
-        
-        anchorMap[anchor.identifier] = node
         arViewDelegate?.renderer?(renderer, didAdd: node, for: anchor)
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
-        //guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         arViewDelegate?.renderer?(renderer, willUpdate: node, for: anchor)
     }
 
@@ -42,7 +40,7 @@ extension SceneLocationView: ARSCNViewDelegate {
 
 // MARK: - ARSessionObserver
 
-@available(iOS 11.3, *)
+@available(iOS 11.0, *)
 extension SceneLocationView {
 
     public func session(_ session: ARSession, didFailWithError error: Error) {
@@ -100,11 +98,12 @@ extension SceneLocationView {
     public func session(_ session: ARSession, didOutputAudioSampleBuffer audioSampleBuffer: CMSampleBuffer) {
         arViewDelegate?.session?(session, didOutputAudioSampleBuffer: audioSampleBuffer)
     }
+
 }
 
 // MARK: - SCNSceneRendererDelegate
 
-@available(iOS 11.3, *)
+@available(iOS 11.0, *)
 extension SceneLocationView {
 
     public func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
@@ -129,50 +128,10 @@ extension SceneLocationView {
                 sceneLocationManager.addSceneLocationEstimate(location: currentLocation)
             }
         }
-        
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         arViewDelegate?.renderer?(renderer, updateAtTime: time)
-        /*
-        if #available(iOS 13.0, *) {
-            for locationNode in locationNodes {
-                let sceneLocation = simd_float3(renderer.pointOfView!.worldPosition)
-                let dirVec = simd_float3(locationNode.directionVector!)
-                let raycastQuery = ARRaycastQuery.init(origin: sceneLocation, direction: dirVec,
-                                    allowing: ARRaycastQuery.Target.existingPlaneGeometry, alignment: ARRaycastQuery.TargetAlignment.vertical)
-                let rayResult = self.session.raycast(raycastQuery)
-                if let result = rayResult.first  {
-                    guard let planeAnchor = result.anchor else {
-                        return
-                    }
-                    locationNode.continuallyAdjustNodePositionWhenWithinRange = false
-                    locationNode.continuallyUpdatePositionAndScale = false
-                    let pos = result.worldTransform
-                    let node = SCNNode(geometry: SCNBox(width:0.001, height:0.001, length:0.001, chamferRadius: 0))
-                    node.setWorldTransform(SCNMatrix4(pos))
-                    
-                    sceneNode!.addChildNode(node)
-                    locationNode.worldPosition = (node.worldPosition)
-                    locationNode.scale = SCNVector3(1,1,1)
-                    locationNode.childNodes.forEach { annotationNode in
-                        annotationNode.worldPosition = node.worldPosition
-                        annotationNode.scale = SCNVector3(0.1,0.1,0.1)
-                        annotationNode.childNodes.forEach { child in
-                            child.scale = SCNVector3(1,1,1)
-                        }
-                    }
-                    print("Successful raycast plane collision")
-                } else {
-                    locationNode.continuallyAdjustNodePositionWhenWithinRange = true
-                    locationNode.continuallyUpdatePositionAndScale = true
-                }
-                //print(locationNodes.first!.position)
-            }
-        } else {
-            print("Plane raycasting unsupported")
-            // Fallback on earlier versions
-        }*/
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {
@@ -189,6 +148,5 @@ extension SceneLocationView {
 
     public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         arViewDelegate?.renderer?(renderer, willRenderScene: scene, atTime: time)
-        
     }
 }

@@ -82,12 +82,14 @@ extension LocationManager: CLLocationManagerDelegate {
         locations.forEach {
             delegate?.locationManagerDidUpdateLocation(self, location: $0)
         }
+
         self.currentLocation = manager.location
     }
 
     public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         heading = newHeading.headingAccuracy >= 0 ? newHeading.trueHeading : newHeading.magneticHeading
         headingAccuracy = newHeading.headingAccuracy
+
         delegate?.locationManagerDidUpdateHeading(self, heading: heading!, accuracy: newHeading.headingAccuracy)
     }
 
