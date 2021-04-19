@@ -371,6 +371,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         present(popupVC, animated: true, completion: nil)
     }
     
+    @objc func locationNodeTouched(node: LocationNode) {
+            // required to satisfy delegate protocol
+        }
+        
 
 }
 extension UIFont {
