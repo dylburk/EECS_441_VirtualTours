@@ -27,8 +27,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     var lastLandmarkUpdate = CLLocation()
     var lastLocation = CLLocation()
     
-    //let locationUpdateFilterSMS = 100.0
-    
     let updateDeltaMeters = 10.0
     let locationUpdateFilter = 3.0
     let planeDetectFilter = 30.0
@@ -65,14 +63,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         sideMenu?.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: view)
-        //sideMenu?.presentationStyle.backgroundColor = UIColor.red
         sideMenu?.menuWidth = 200
         
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
 
-        // locationManager.distanceFilter = updateDeltaMeters // We think this might mess up the updates while walking, keep it commented out???
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.showsBackgroundLocationIndicator = true
         locationManager.requestAlwaysAuthorization()
@@ -105,7 +101,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
 
                     self.updateLandmarks()
                     mapsVC.landmarks = self.landmarks
-                    // self.navigationController!.pushViewController(mapsVC, animated: true)
                     self.present(mapsVC, animated: true, completion: nil)
                 }
             }
@@ -113,8 +108,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                 print(" I am in the Settings section")
                 let storyBoard = UIStoryboard(name: "Main", bundle:nil)
                 if let settingVC = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController") as? SettingsViewController {
-                    
-                    // self.navigationController!.pushViewController(mapsVC, animated: true)
+        
                     self.present(settingVC, animated: true, completion: nil)
                 
                 }
@@ -139,7 +133,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         newARView.sceneTrackingDelegate = nil
         newARView.locationEstimateMethod = locationEstimateMethod
 
-        //newARView.debugOptions = [.showWorldOrigin, .showBoundingBoxes]
         newARView.showAxesNode = false
         newARView.autoenablesDefaultLighting = true
         contentView.addSubview(newARView)
@@ -167,9 +160,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //print("locationManager refreshed")
         if locations.count > 0 {
-            //print("locationManager refreshed")
             if (lastLandmarkUpdate.distance(from: locations.last!) > landmarkUpdateFilter || landmarks.isEmpty) {
                 lastLandmarkUpdate = locations.last!
                 print("retrieving from backend")
@@ -207,7 +198,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             print("NEW THREAD")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.updateLandmarks()
-                //print("getting landmarks")
             }
             return
         }
@@ -221,21 +211,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
             self.colorIndex += 1
             self.arView.removeAllNodes()
             self.addLandmarks(currentLocation)
-            //self.addDynamicNodes(currentLocation)
         }
     }
     
     
     func addLandmarks(_ currentLocation: CLLocation){
-        //print("Adding landmarks")
         if landmarks.isEmpty {
             return
         }
         
-        //print("landmarks: ", landmarks.count)
-        
         for landmark in landmarks {
-            //print(landmark.title)
             addLandmarkToARScene(currentLocation: currentLocation, landmark: landmark)
         }
 
@@ -246,7 +231,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
         
         loader.loadLandmarks(location: currentLocation) { landmarkDict, error in
             if let dict = landmarkDict {
-                //print(dict)
+                
                 guard let result = dict.object(forKey: "landmarks") as? [NSDictionary]  else { return }
                 self.landmarks = []
                 for item in result {
@@ -257,18 +242,15 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
                     let title = item.object(forKey: "name") as! String
                     let id = item.value(forKey: "id") as! String
                     let types = item.object(forKey: "types") as! [Any]
-                    //let address = item.object(forKey: "address") as! String
 
                     let landmark = Landmark(latitude: latitude,
                                        longitude: longitude,
                                        title: title,
                                        id: id,
                                        types: types)
-                    //print(landmark)
+                    
                     self.landmarks.append(landmark)
                 }
-                //print("LANDMARKS:")
-                //print(self.landmarks!)
                 handler(nil)
             }
         }
@@ -360,9 +342,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate, CLLocationManagerDe
     
     
     @objc func annotationNodeTouched(node: AnnotationNode) {
-        // Need to abstract the functionality of this to a seperate class
-        //print("Annotation Tap")
-        //print(node.tag)
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let popupVC = storyboard.instantiateViewController(withIdentifier: "LandmarkInfo") as! LIViewController
         popupVC.modalPresentationStyle = .overCurrentContext
