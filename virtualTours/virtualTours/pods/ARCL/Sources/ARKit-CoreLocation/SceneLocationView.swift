@@ -12,7 +12,7 @@ import CoreLocation
 import MapKit
 
 //Should conform to delegate here, add in future commit
-@available(iOS 11.0, *)
+@available(iOS 11.3, *)
 
 /// `SceneLocationView` is the `ARSCNView` subclass used to render an ARCL scene.
 ///
@@ -21,6 +21,9 @@ import MapKit
 /// shadowed by `ARSCNViewDelegate` and invoked on the `SceneLocationView`'s `arDelegate`. If you need to receive
 /// any of these callbacks, implement them on your `arDelegate`.
 open class SceneLocationView: ARSCNView {
+    // Used to track anchor nodes for plane allocation
+    public var anchorMap = [UUID:SCNNode]()
+    
     /// The limit to the scene, in terms of what data is considered reasonably accurate.
     /// Measured in meters.
     static let sceneLimit = 100.0
@@ -185,14 +188,15 @@ open class SceneLocationView: ARSCNView {
     }
 }
 
-@available(iOS 11.0, *)
+@available(iOS 11.3, *)
 public extension SceneLocationView {
 
     func run() {
         switch arTrackingType {
         case .worldTracking:
+            print("World tracking")
             let configuration = ARWorldTrackingConfiguration()
-            configuration.planeDetection = .horizontal
+            configuration.planeDetection = [.vertical]
             configuration.worldAlignment = orientToTrueNorth ? .gravityAndHeading : .gravity
             session.run(configuration)
 
@@ -273,6 +277,7 @@ public extension SceneLocationView {
         }
 
         locationNodes.append(locationNode)
+        //print(locationNode.position)
         sceneNode?.addChildNode(locationNode)
     }
 
@@ -305,6 +310,11 @@ public extension SceneLocationView {
         guard let childNodes = sceneNode?.childNodes else { return }
         for node in childNodes {
             node.removeFromParentNode()
+        }
+        for element in anchorMap {
+            for node in element.value.childNodes {
+                node.removeFromParentNode()
+            }
         }
     }
 
@@ -341,7 +351,7 @@ public extension SceneLocationView {
     }
 }
 
-@available(iOS 11.0, *)
+@available(iOS 11.311.3, *)
 public extension SceneLocationView {
 
     /// Adds routes to the scene and lets you specify the geometry prototype for the box.
@@ -399,7 +409,7 @@ public extension SceneLocationView {
     }
 }
 
-@available(iOS 11.0, *)
+@available(iOS 11.311.3, *)
 public extension SceneLocationView {
     /// Adds polylines to the scene and lets you specify the geometry prototype for the box.
     /// Note: You can provide your own SCNBox prototype to base the direction nodes from.
@@ -440,7 +450,7 @@ public extension SceneLocationView {
     }
 }
 
-@available(iOS 11.0, *)
+@available(iOS 11.3, *)
 extension SceneLocationView: SceneLocationManagerDelegate {
     var scenePosition: SCNVector3? { return currentScenePosition }
 

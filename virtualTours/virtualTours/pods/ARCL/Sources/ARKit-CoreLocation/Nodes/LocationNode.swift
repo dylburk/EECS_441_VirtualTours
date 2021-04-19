@@ -84,6 +84,8 @@ open class LocationNode: SCNNode {
 
     /// The scheme to use for scaling
     public var scalingScheme: ScalingScheme = .normal
+    
+    public var directionVector : SCNVector3?
 
     public init(location: CLLocation?, tag: String? = nil) {
         self.location = location
@@ -134,6 +136,7 @@ open class LocationNode: SCNNode {
                 self.position = SCNVector3( x: position.x + adjustedTranslation.x,
                                             y: position.y + adjustedTranslation.y,
                                             z: position.z - adjustedTranslation.z)
+                
                 self.scale = SCNVector3(x: scale, y: scale, z: scale)
             } else {
                 adjustedDistance = distance
@@ -149,13 +152,19 @@ open class LocationNode: SCNNode {
 
             scale = SCNVector3(x: 1, y: 1, z: 1)
         }
+        
+        if #available(iOS 11.0, *) {
+            self.directionVector = self.worldPosition
+        } else {
+            // Fallback on earlier versions
+        }
 
         return adjustedDistance
     }
 
     /// See `LocationAnnotationNode`'s override of this function. Because it doesn't invoke `super`'s version, any changes
     /// made in this file must be repeated in `LocationAnnotationNode`.
-    func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?, locationNodeLocation nodeLocation: CLLocation,
+    public func updatePositionAndScale(setup: Bool = false, scenePosition: SCNVector3?, locationNodeLocation nodeLocation: CLLocation,
                                 locationManager: SceneLocationManager, onCompletion: (() -> Void)) {
         guard let position = scenePosition, locationManager.currentLocation != nil else {
             return
