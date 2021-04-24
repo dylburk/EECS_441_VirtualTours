@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         dbRadius = 25
         
     
-    APIKey = "AIzaSyBteIWUNfzha84rBc5w7FKKnkt46wF1tbg"
+    APIKey = "API KEY HERE"
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + \
     "," + longitude + \
     "&radius=" + str(googleRadius) + \
