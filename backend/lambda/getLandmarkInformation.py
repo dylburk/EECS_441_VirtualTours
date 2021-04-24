@@ -5,7 +5,7 @@ def lambda_handler(event, context):
 
     id = event['queryStringParameters']['id']
 
-    APIKey = "AIzaSyBteIWUNfzha84rBc5w7FKKnkt46wF1tbg"
+    APIKey = "API KEY HERE"
     url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + id + \
     "&key=" +  APIKey
 
